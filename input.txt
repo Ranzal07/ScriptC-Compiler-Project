@@ -1,0 +1,4 @@
+num:int=55
+display:"%d",num
+
+
