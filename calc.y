@@ -70,7 +70,7 @@ expr    	: term 																	{$$ = $1;}
        	    | expr '+' term                                                		  {$$ = $1 + $3;}
        	    | expr '-' term                                               		 {$$ = $1 - $3;}
             | expr '*' term                                                		{$$ = $1 * $3;}
-       	    | expr '/' term                                               			 {$$ = $1 / $3;}
+       	    | expr '/' ter                                               			 {$$ = $1 / $3;}
        	    ;
 
 term		: IDENTIFIER                                                        {$$ = getFloVal($1);}
