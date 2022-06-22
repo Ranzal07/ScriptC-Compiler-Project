@@ -47,10 +47,12 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      display = 258,
-     int_spec = 259,
-     dig = 260,
-     identifier = 261,
-     INT = 262
+     SPECIFIER = 259,
+     INT = 260,
+     FLOAT = 261,
+     IDENTIFIER = 262,
+     INTEGERS = 263,
+     DECIMALS = 264
    };
 #endif
 
@@ -59,11 +61,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 24 "calc.y"
-int i; float f; char* s; char* var_type;
+#line 38 "calc.y"
+int i; float f; char* s;
 
 /* Line 2058 of yacc.c  */
-#line 67 "calc.tab.h"
+#line 69 "calc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

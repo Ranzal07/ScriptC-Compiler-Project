@@ -1,4 +1,4 @@
-num:int=55
-display:"%d",num
-
-
+num:float=10.1
+numy:float=13.2
+display:"%f",num
+display:"%f",numy

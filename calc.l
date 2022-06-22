@@ -5,17 +5,21 @@
 #include "calc.tab.h"
 
 %}
+
 %%
 "display"			                    {return display;}
-int                                     {yylval.var_type=strdup(yytext);return INT;}
 
+"int"                                   {return INT;}
+"float"                                 {return FLOAT;}
 
-"%d"                                    {yylval.i = yytext[0]; return int_spec;}
+"%d"|"%f"                               {yylval.s = strdup(yytext); return SPECIFIER;}
+                             
      
+[-]?[0-9]+                              {yylval.i = atoi(yytext); return INTEGERS;}
+[-]?[0-9]+\.[0-9]+                      {yylval.f = atof(yytext); return DECIMALS;}       
 
-[-]?[0-9]+                              {yylval.i = atoi(yytext); return dig;}
+[a-zA-Z][a-zA-Z0-9]+			        {yylval.s = strdup(yytext); return IDENTIFIER;}
 
-[a-zA-Z][a-zA-Z0-9_]+			        {yylval.s=strdup(yytext); return identifier;}
 
 
 [ \t\n]                                 ;
