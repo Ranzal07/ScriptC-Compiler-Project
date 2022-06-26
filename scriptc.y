@@ -130,7 +130,6 @@ void checkVarExist(char* variable, float value){
 	int flag = 0;
 	char* temp;
 	
-
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
