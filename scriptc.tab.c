@@ -63,45 +63,238 @@
 
 /* Copy the first part of user declarations.  */
 /* Line 371 of yacc.c  */
-#line 1 "calc.y"
+#line 1 "scriptc.y"
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #include <ctype.h>
-
 
 extern int yylex();
 void yyerror (char *strError);	
-int line=1;
-int var_inc=0;
-int stat_inc=0;
 
+int line=1;			// for getting incremented line numbers
+int indexVar=0;		// for incrementing variables
+int stat_inc=0;
+int stat = 0;
+/*struct for storing ID or Variable data*/
 typedef struct indentifiers{
-	char var[100];
-	char typ[100];
+	char var[1000];
+	char typ[1000];
 	int ival;
 	float fval;
 } identifier;
 
-char stat_storage[100];
-float symbols[1000];
-identifier id[100];
+float symbols[1000]; // symbols store values to the identifier
+identifier id[1000]; // id will be the variable for the struct
 
-void checkNumType(char* symbol);
-void saveDecVar(char* symbol, char* type, float flo_val);
-void checkDupVar(char* symbol, char* type);
-void checkDupVar2(char* symbol, char* type, float flo_val);
-void checkDecVar(char* symbol, float flo_val);
+void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
+ 
 
-float getFloVal(char* symbol);
+/* compIdxVar will compute the given variable index and return it*/    
+char compIdxVar(char* variable){
+    int idx = *variable;
+    return idx;
+} 
 
-void storeFloVal(char* symbol, char* type, float flo_val);
-void oneValPrint(char* specifier, float symbol);
-void twoValPrint(char* specifier, char* specifier2, float symbol, float symbol2);
+/* getValue gets the given variable's int or float value and return it to the IDENTIFIER token */
+float getValue(char* variable){	
+	int i;
+	int flag = 0;
+	
+	int bucket = compIdxVar(variable); // recognized variable will be initialized to the bucket variable
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){
+				symbols[bucket] = id[i].ival;	
+				return symbols[bucket];	// returns the given variable's recognized int value
+			}
+			else if(strcmp(id[i].typ,"float")==0){
+				symbols[bucket] = id[i].fval;
+				return symbols[bucket];	// returns the current variable's recognized float value
+			}	
+		}
+	}
+}
+
+
+/* updates the value of a given variable */
+void updateVal(char* variable, float value){
+	int i;
+	int toIntValue = value;
+	int bucket = compIdxVar(variable);
+
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){			
+				symbols[bucket] = toIntValue;
+				id[i].ival = symbols[bucket];		
+				break;
+			}
+			else if(strcmp(id[i].typ,"float")==0){
+				symbols[bucket] = value;
+				id[i].fval = symbols[bucket];
+				break;
+			}
+		}
+	}
+}
+
+/* saveThisVar saves the verified given variable and its given type to the struct identifiers */
+char* saveThisVar(char* variable, char* type){
+	strcpy(id[indexVar].var,variable);
+	strcpy(id[indexVar].typ,type);
+	indexVar++; // Increments to the next ID index after saving the variable and type
+}
+
+/* saveThisVar saves the verified given variable and its type to the struct identifiers */
+void saveThisVal(char* variable, float value){
+	int toIntValue = value;
+	int i;
+
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){
+				id[indexVar].ival = toIntValue;				
+			}
+			else if(strcmp(id[i].typ,"float")==0){
+				id[indexVar].fval = value;	
+			}
+		}
+	}
+}
+
+/* checkVarDup checks any duplicate or redeclared given variable  */
+void checkVarDup(char* variable, char* type){
+	int i;
+	int flag=0;
+	char* temp;
+
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,id[indexVar].typ)==0){
+				flag=1;
+				break;
+			}
+		}
+	}
+	if(flag==1){
+		printf("\n****ERROR LINE %d: '%s' already declared!****",line,variable);
+		
+	}
+	else{
+		saveThisVar(variable,type);
+		printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);
+		
+	}
+}
+
+/* checkVarExist checks if the given variable exists during initialization */
+void checkVarExist(char* variable, float value){
+	int i;
+	int flag = 0;
+	char* temp;
+	
+
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){
+				flag = 1;			
+				break;			
+			}
+			else if(strcmp(id[i].typ,"float")==0){
+				flag = 1;
+				break;			
+			}
+		}
+	}
+
+	if(flag==1){
+		saveThisVal(variable,value);
+		updateVal(variable,value);
+		stat = 1;
+	} else {
+		stat = 2;
+	}
+	if(stat == 1){
+		printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
+	
+	}
+	else if(stat == 2){
+		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
+	}
+}
+
+/* checkThisVar checks if the given variable initialized to another variable exists*/
+float checkThisVar(char* variable){
+	int i, toIntValue;
+	int flag = 0;
+	char* temp;
+
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){
+				flag = 1;
+				break;			
+			}
+			if(strcmp(id[i].typ,"float")==0){
+				flag = 1;
+				break;
+			}
+		}
+	}
+	if(flag==1){
+		return getValue(variable); // if exists, then it will invoke the getValue function
+	} else {
+		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
+	}
+}
+
+/* oneValPrint prints one given variable's value*/
+void oneValPrint(char* specifier, float value){
+	int toIntValue = value;
+
+	if(strcmp(specifier,"%d")==0){
+		printf("\nLINE %d Output: %d",line,toIntValue);
+	}
+	else if(strcmp(specifier,"%f")==0){
+		printf("\nLINE %d Output: %g",line,value);
+	}
+}
+
+/* oneValPrint prints two given variables' values*/
+void twoValPrint(char* specifier, char* specifier2, float value, float value2){
+	int toIntValue = value;
+	int toIntValue2 = value2;
+
+	if(strcmp(specifier,"%d")==0){
+		if(strcmp(specifier2,"%d")==0){
+			printf("\nLINE %d Output: %d%d",line,toIntValue,toIntValue2);
+		}
+		else{
+			printf("\nLINE %d Output: %d%g",line,toIntValue,value2);
+		}
+	}
+	else if(strcmp(specifier,"%f")==0){
+		if(strcmp(specifier2,"%f")==0){
+			printf("\nLINE %d Output: %g%g",line,value,value2);
+		}
+		else{
+			printf("\nLINE %d Output: %g%d",line,value,toIntValue2);
+		}
+	}
+}
+
+
+int main () {
+	
+	return yyparse();
+}
+
 
 /* Line 371 of yacc.c  */
-#line 105 "calc.tab.c"
+#line 298 "scriptc.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -120,9 +313,9 @@ void twoValPrint(char* specifier, char* specifier2, float symbol, float symbol2)
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "calc.tab.h".  */
-#ifndef YY_YY_CALC_TAB_H_INCLUDED
-# define YY_YY_CALC_TAB_H_INCLUDED
+   by #include "scriptc.tab.h".  */
+#ifndef YY_YY_SCRIPTC_TAB_H_INCLUDED
+# define YY_YY_SCRIPTC_TAB_H_INCLUDED
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -138,10 +331,10 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      display = 258,
-     SPECIFIER = 259,
-     INT = 260,
-     FLOAT = 261,
-     IDENTIFIER = 262,
+     IDENTIFIER = 259,
+     SPECIFIER = 260,
+     INT = 261,
+     FLOAT = 262,
      INTEGERS = 263,
      DECIMALS = 264
    };
@@ -152,11 +345,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 38 "calc.y"
+#line 230 "scriptc.y"
 int i; float f; char* s;
 
 /* Line 387 of yacc.c  */
-#line 160 "calc.tab.c"
+#line 353 "scriptc.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -179,12 +372,12 @@ int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_YY_CALC_TAB_H_INCLUDED  */
+#endif /* !YY_YY_SCRIPTC_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 188 "calc.tab.c"
+#line 381 "scriptc.tab.c"
 
 #ifdef short
 # undef short
@@ -404,7 +597,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   42
+#define YYLAST   43
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  18
@@ -467,23 +660,23 @@ static const yytype_uint8 yyprhs[] =
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      19,     0,    -1,    20,    -1,    19,    20,    -1,     7,    10,
-      21,    -1,     7,    11,    23,    -1,     7,    10,    21,    11,
-      23,    -1,    22,    -1,     5,    -1,     6,    -1,     3,    10,
+      19,     0,    -1,    20,    -1,    19,    20,    -1,     4,    10,
+      21,    -1,     4,    11,    23,    -1,     4,    10,    21,    11,
+      23,    -1,    22,    -1,     6,    -1,     7,    -1,     3,    10,
       12,     8,    12,    -1,     3,    10,    12,     9,    12,    -1,
-       3,    10,    12,     4,    12,    13,    23,    -1,     3,    10,
-      12,     4,     4,    12,    13,    23,    13,    23,    -1,    24,
+       3,    10,    12,     5,    12,    13,    23,    -1,     3,    10,
+      12,     5,     5,    12,    13,    23,    13,    23,    -1,    24,
       -1,    23,    14,    24,    -1,    23,    15,    24,    -1,    23,
-      16,    24,    -1,    23,    17,    24,    -1,     7,    -1,     8,
+      16,    24,    -1,    23,    17,    24,    -1,     4,    -1,     8,
       -1,     9,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    48,    48,    49,    52,    53,    54,    55,    58,    59,
-      62,    63,    64,    65,    69,    70,    71,    72,    73,    76,
-      77,    78
+       0,   241,   241,   242,   245,   246,   247,   248,   252,   253,
+     257,   258,   259,   260,   264,   265,   266,   267,   268,   272,
+     273,   274
 };
 #endif
 
@@ -492,10 +685,10 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "display", "SPECIFIER", "INT", "FLOAT",
-  "IDENTIFIER", "INTEGERS", "DECIMALS", "':'", "'='", "'\"'", "','", "'+'",
-  "'-'", "'*'", "'/'", "$accept", "program", "statements", "type", "print",
-  "expr", "term", YY_NULL
+  "$end", "error", "$undefined", "display", "IDENTIFIER", "SPECIFIER",
+  "INT", "FLOAT", "INTEGERS", "DECIMALS", "':'", "'='", "'\"'", "','",
+  "'+'", "'-'", "'*'", "'/'", "$accept", "program", "statements", "type",
+  "print", "expr", "term", YY_NULL
 };
 #endif
 
@@ -548,17 +741,17 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -24
 static const yytype_int8 yypact[] =
 {
-      11,    -8,    -6,     3,   -24,   -24,    -5,    32,    27,   -24,
-     -24,     4,   -24,   -24,     0,   -24,   -24,   -24,    12,   -24,
-      -3,     5,    13,    27,    27,    27,    27,    27,    28,    26,
-     -24,   -24,    12,   -24,   -24,   -24,   -24,    29,    27,    27,
-      12,     7,    27,    12
+       0,    -5,    26,    17,   -24,   -24,     6,    32,    -2,   -24,
+     -24,    18,   -24,   -24,    11,   -24,   -24,   -24,    14,   -24,
+      -4,    12,    13,    -2,    -2,    -2,    -2,    -2,    28,    29,
+     -24,   -24,    14,   -24,   -24,   -24,   -24,    30,    -2,    -2,
+      14,    -3,    -2,    14
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -24,   -24,    38,   -24,   -24,   -23,     6
+     -24,   -24,    38,   -24,   -24,   -23,     8
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -567,11 +760,11 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      32,    28,     6,     9,     7,     8,     1,    11,    20,    29,
-       2,    23,    21,    22,     1,    40,    41,    30,     2,    43,
-      42,    24,    25,    26,    27,    31,    24,    25,    26,    27,
-      33,    34,    35,    36,    15,    16,    17,    12,    13,    38,
-      37,    10,    39
+      32,    28,    15,     1,     2,     6,    16,    17,    29,     0,
+      42,    24,    25,    26,    27,    40,    41,     9,    11,    43,
+       1,     2,    23,    20,    30,    31,    21,    22,    24,    25,
+      26,    27,    33,    34,    35,    36,     7,     8,    12,    13,
+      37,    10,    38,    39
 };
 
 #define yypact_value_is_default(Yystate) \
@@ -580,22 +773,22 @@ static const yytype_uint8 yytable[] =
 #define yytable_value_is_error(Yytable_value) \
   YYID (0)
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-      23,     4,    10,     0,    10,    11,     3,    12,     4,    12,
-       7,    11,     8,     9,     3,    38,    39,    12,     7,    42,
-      13,    14,    15,    16,    17,    12,    14,    15,    16,    17,
-      24,    25,    26,    27,     7,     8,     9,     5,     6,    13,
-      12,     3,    13
+      23,     5,     4,     3,     4,    10,     8,     9,    12,    -1,
+      13,    14,    15,    16,    17,    38,    39,     0,    12,    42,
+       3,     4,    11,     5,    12,    12,     8,     9,    14,    15,
+      16,    17,    24,    25,    26,    27,    10,    11,     6,     7,
+      12,     3,    13,    13
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     7,    19,    20,    22,    10,    10,    11,     0,
-      20,    12,     5,     6,    21,     7,     8,     9,    23,    24,
-       4,     8,     9,    11,    14,    15,    16,    17,     4,    12,
+       0,     3,     4,    19,    20,    22,    10,    10,    11,     0,
+      20,    12,     6,     7,    21,     4,     8,     9,    23,    24,
+       5,     8,     9,    11,    14,    15,    16,    17,     5,    12,
       12,    12,    23,    24,    24,    24,    24,    12,    13,    13,
       23,    23,    13,    23
 };
@@ -1399,121 +1592,121 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 48 "calc.y"
+#line 241 "scriptc.y"
     {line++;}
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 49 "calc.y"
+#line 242 "scriptc.y"
     {line++;}
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 52 "calc.y"
-    {checkDupVar((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].s));}
+#line 245 "scriptc.y"
+    {checkVarDup((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].s));}
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 53 "calc.y"
-    {checkDecVar((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].f)); checkNumType((yyvsp[(1) - (3)].s));}
+#line 246 "scriptc.y"
+    {checkVarExist((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].f));}
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 54 "calc.y"
-    {checkDupVar2((yyvsp[(1) - (5)].s),(yyvsp[(3) - (5)].s),(yyvsp[(5) - (5)].f));}
+#line 247 "scriptc.y"
+    {checkVarDup((yyvsp[(1) - (5)].s),(yyvsp[(3) - (5)].s)); checkVarExist((yyvsp[(1) - (5)].s),(yyvsp[(5) - (5)].f));}
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 58 "calc.y"
+#line 252 "scriptc.y"
     {(yyval.s) = (yyvsp[(1) - (1)].s);}
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 59 "calc.y"
+#line 253 "scriptc.y"
     {(yyval.s) = (yyvsp[(1) - (1)].s);}
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 62 "calc.y"
+#line 257 "scriptc.y"
     {printf("%d",(yyvsp[(4) - (5)].i));}
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 63 "calc.y"
+#line 258 "scriptc.y"
     {printf("%f",(yyvsp[(4) - (5)].f));}
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 64 "calc.y"
+#line 259 "scriptc.y"
     {oneValPrint((yyvsp[(4) - (7)].s),(yyvsp[(7) - (7)].f));}
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 65 "calc.y"
+#line 260 "scriptc.y"
     {twoValPrint((yyvsp[(4) - (10)].s),(yyvsp[(5) - (10)].s),(yyvsp[(8) - (10)].f),(yyvsp[(10) - (10)].f));}
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 69 "calc.y"
+#line 264 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (1)].f);}
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 70 "calc.y"
+#line 265 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) + (yyvsp[(3) - (3)].f);}
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 71 "calc.y"
+#line 266 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) - (yyvsp[(3) - (3)].f);}
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 72 "calc.y"
+#line 267 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) * (yyvsp[(3) - (3)].f);}
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 73 "calc.y"
+#line 268 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) / (yyvsp[(3) - (3)].f);}
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 76 "calc.y"
-    {(yyval.f) = getFloVal((yyvsp[(1) - (1)].s));}
+#line 272 "scriptc.y"
+    {(yyval.f) = checkThisVar((yyvsp[(1) - (1)].s));}
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 77 "calc.y"
+#line 273 "scriptc.y"
     {(yyval.f)=(yyvsp[(1) - (1)].i);}
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 78 "calc.y"
+#line 274 "scriptc.y"
     {(yyval.f)=(yyvsp[(1) - (1)].f);}
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1517 "calc.tab.c"
+#line 1710 "scriptc.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1745,209 +1938,5 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 89 "calc.y"
+#line 277 "scriptc.y"
                     
-/* C code */
-
-/* returns int value to the identifier */
-
-void checkDupVar(char* symbol, char* type){
-	int i;
-	int flag=0;
-	for(i=0;i<var_inc;i++){
-		if(strcmp(id[i].var,symbol)==0){
-			flag=1;
-			break;
-		}
-	}
-	if(flag==1){
-		printf("\nERROR LINE %d: '%s' already declared!",line,symbol);
-		stat_inc++;
-	}
-	else{
-		printf("\nLINE %d: Correct Variable Declaration!",line);
-		stat_inc++;
-	}
-}
-
-void checkDupVar2(char* symbol, char* type, float flo_val){
-	int i;
-	int flag=0;
-	for(i=0;i<var_inc;i++){
-		if(strcmp(id[i].var,symbol)==0){
-			flag=1;
-			break;
-		}
-	}
-	if(flag==1){
-		printf("\nERROR LINE %d: '%s' already declared!",line,symbol);
-		stat_inc++;
-	}
-	else{
-		printf("\nLINE %d: Correct Variable Declaration!",line);
-		stat_inc++;
-		saveDecVar(symbol,type,flo_val);
-		storeFloVal(symbol,type,flo_val);
-	}
-}
-
-
-
-void checkNumType(char* symbol)
-{
-	int i;
-	int flag=0;
-	for(i=0;i<var_inc;i++){
-		if(strcmp(id[i].var,symbol)==0 && strcmp(id[i].typ,"int")==0){
-			flag=1;
-			break;
-		}
-		else if(strcmp(id[i].var,symbol)==0 && strcmp(id[i].typ,"float")==0){
-			flag=2;
-			break;
-		}
-	}
-	if(flag==1){
-		/*sprintf(stat_storage[stat_inc], "\nERROR LINE %d: '%s' cannot convert into float!",line,symbol);*/
-		stat_inc++;
-	}
-	else if(flag==2){
-		/*sprintf(stat_storage[stat_inc], "\nERROR LINE %d: '%s' cannot convert into int!",line,symbol);*/
-		stat_inc++;
-	}
-	else{
-		/*sprintf(stat_storage[stat_inc], "\nLINE %d: Correct Initialization!",line);*/
-		stat_inc++;
-	}
-}
-
-void oneValPrint(char* specifier, float symbol){
-	int num;
-	char spec[5];
-	strcpy(spec,specifier);
-	if(strcmp(spec,"%d")==0){
-		num=symbol;
-		printf("\n%d",num);
-	}
-	else{
-		printf("\n%g",symbol);
-	}
-}
-
-void twoValPrint(char* specifier, char* specifier2, float symbol, float symbol2){
-	int num;
-	int num2;
-	char spec[5];
-	char spec2[5];
-	strcpy(spec,specifier);
-	strcpy(spec2,specifier2);
-	if(strcmp(spec,"%d")==0){
-		if(strcmp(spec2,"%d")==0){
-			num=symbol;
-			num2=symbol2;
-			printf("\n%d%d",num,num2);
-		}
-		else{
-			num=symbol;
-			printf("\n%d%g",num,symbol2);
-		}
-	}
-	else if(strcmp(spec,"%f")==0){
-		if(strcmp(spec2,"%f")==0){
-			printf("\n%g%g",symbol,symbol2);
-		}
-		else{
-			num2=symbol2;
-			printf("\n%g%d",symbol,num2);
-		}
-	}
-}
-
-
-void saveDecVar(char* symbol, char* type, float flo_val){
-	int to_int;
-	char sym[100];
-	char vtype[10];
-	strcpy(sym,symbol);
-	strcpy(vtype,type);
-	if(strcmp(vtype,"int")==0){
-		to_int = flo_val;
-		strcpy(id[var_inc].var, sym);
-		strcpy(id[var_inc].typ, vtype);
-		id[var_inc].ival = to_int;
-		var_inc++;
-	}
-	else if(strcmp(vtype,"int")==0){
-		strcpy(id[var_inc].var, sym);
-		strcpy(id[var_inc].typ, vtype);
-		id[var_inc].fval = flo_val;
-		var_inc++;
-	}
-}
-
-void checkDecVar(char* symbol, float flo_val){
-	int i;
-	int flag = 0;
-	for(i=0;i<var_inc;i++){
-		if(strcmp(id[i].var,symbol)==0){
-			flag = 1;
-			break;
-		}
-	}
-	if(flag==1){
-		printf("\nLINE %d: Correct Variable Initialization!",line);
-		stat_inc++;
-		
-	} else {
-		printf("\nERROR LINE %d: '%s' undeclared!",line,symbol);
-		stat_inc++;
-	}
-}
-
-int getCurTok(char* token)
-{
-	int idx = -1;
-    idx = *token;
-    return idx;
-} 
-
-
-/* returns float value to the identifier */
-float getFloVal(char* symbol)
-{	
-	int bucket = getCurTok(symbol);
-	return symbols[bucket];
-}
-
-/* stores the int value into the identifier */
-
-
-/* stores the float value into the identifier */
-void storeFloVal(char* symbol, char* type, float flo_val)
-{
-	int to_int;
-	char vtype[10];
-	strcpy(vtype,type);
-	int bucket = getCurTok(symbol);
-	symbols[bucket] = flo_val;
-
-}
-
-/* stores the string value into the identifier */
-void stat_print(){
-	int i;
-	for(i=0;i<stat_inc;i++){
-		printf("%s",stat_storage[i]);
-	}
-}
-
-int main (void) {
-	/* init symbol table */
-	int i;
-	for(i=0; i<52; i++) {
-		symbols[i] = 0;
-	}
-	return yyparse();
-}
-
-void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 

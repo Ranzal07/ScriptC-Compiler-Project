@@ -287,7 +287,7 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 static yyconst short int yy_accept[33] =
     {   0,
         0,    0,   12,   10,    8,    8,    9,   10,    9,    5,
-       10,   10,   10,   10,    4,    5,    0,    7,    7,    7,
+        7,    7,    7,    7,    4,    5,    0,    7,    7,    7,
         7,    6,    7,    7,    2,    7,    7,    7,    3,    7,
         1,    0
     } ;
@@ -303,7 +303,7 @@ static yyconst int yy_ec[256] =
         4,    1,    1,    1,    9,    9,    9,    9,    9,    9,
         9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
         9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
-        1,    1,    1,    1,    1,    1,   10,    9,    9,   11,
+        1,    1,    1,    1,    9,    1,   10,    9,    9,   11,
 
         9,   12,    9,    9,   13,    9,    9,   14,    9,   15,
        16,   17,    9,    9,   18,   19,    9,    9,    9,    9,
@@ -326,7 +326,7 @@ static yyconst int yy_ec[256] =
 
 static yyconst int yy_meta[21] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    2,    2,    2,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    2,
         2,    2,    2,    2,    2,    2,    2,    2,    2,    2
     } ;
 
@@ -379,13 +379,13 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "calc.l"
+#line 1 "scriptc.l"
 #define INITIAL 0
-#line 2 "calc.l"
+#line 2 "scriptc.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "calc.tab.h"
+#include "scriptc.tab.h"
 
 #line 391 "lex.yy.c"
 
@@ -538,7 +538,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 9 "calc.l"
+#line 9 "scriptc.l"
 
 #line 544 "lex.yy.c"
 
@@ -625,57 +625,57 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "calc.l"
+#line 10 "scriptc.l"
 {return display;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "calc.l"
-{return INT;}
+#line 12 "scriptc.l"
+{yylval.s = strdup(yytext); return INT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 13 "calc.l"
-{return FLOAT;}
+#line 13 "scriptc.l"
+{yylval.s = strdup(yytext); return FLOAT;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "calc.l"
+#line 14 "scriptc.l"
 {yylval.s = strdup(yytext); return SPECIFIER;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "calc.l"
+#line 16 "scriptc.l"
 {yylval.i = atoi(yytext); return INTEGERS;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 19 "calc.l"
+#line 17 "scriptc.l"
 {yylval.f = atof(yytext); return DECIMALS;}       
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "calc.l"
+#line 18 "scriptc.l"
 {yylval.s = strdup(yytext); return IDENTIFIER;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 25 "calc.l"
+#line 22 "scriptc.l"
 ;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 26 "calc.l"
+#line 23 "scriptc.l"
 {return yytext[0];}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 27 "calc.l"
+#line 24 "scriptc.l"
 {ECHO; yyerror ("unexpected character");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "calc.l"
+#line 26 "scriptc.l"
 ECHO;
 	YY_BREAK
 #line 682 "lex.yy.c"
@@ -1564,6 +1564,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 29 "calc.l"
+#line 26 "scriptc.l"
 
 int yywrap (void) {return 1;}
