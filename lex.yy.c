@@ -297,8 +297,8 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    4,    1,    1,    5,    1,    1,    1,
-        1,    4,    4,    4,    6,    7,    4,    8,    8,    8,
+        1,    2,    1,    4,    1,    1,    5,    1,    1,    4,
+        4,    4,    4,    4,    6,    7,    4,    8,    8,    8,
         8,    8,    8,    8,    8,    8,    8,    4,    1,    1,
         4,    1,    1,    1,    9,    9,    9,    9,    9,    9,
         9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
@@ -385,7 +385,7 @@ char *yytext;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "scriptc.tab.h"
+#include "scriptc-yacc.tab.h"
 
 #line 391 "lex.yy.c"
 

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "scriptc.tab.h"
+#include "scriptc-yacc.tab.h"
 
 %}
 
@@ -20,7 +20,7 @@
 
 
 [ \t\n]                             ;
-[-+*/=":,]                          {return yytext[0];}
+[-+*/=":,()]                        {return yytext[0];}
 .                                   {ECHO; yyerror ("unexpected character");}
 
 %%

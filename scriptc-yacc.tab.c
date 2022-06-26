@@ -68,209 +68,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "scriptc-tools.c"
 
 extern int yylex();
 void yyerror (char *strError);	
 
-int line=1;			// for getting incremented line number indexes
-int indexVar=0;		// for incrementing variable indexes
-
-/*struct for storing ID or Variable data*/
-typedef struct indentifiers{
-	char var[1000];		// var stores variable names
-	char typ[1000];		// type stores variable's type
-	int ival;			// ival stores int type values
-	float fval;			// fval stores float type values
-} identifier;
-
-float symbols[1000];		// symbols store values to the identifier
-identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
-
-void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
- 
-
-/* compIdxVar will compute the given variable index and return it*/    
-char compIdxVar(char* variable){
-    int idx = *variable;
-    return idx;
-} 
-
-/* getValue gets the given variable's int or float value and return it to the IDENTIFIER token */
-float getValue(char* variable){	
-	int i;
-	int flag = 0;
-	
-	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
-				symbols[bucket] = id[i].ival;	
-				return symbols[bucket];		// returns the given variable's recognized int value according to its index
-			}
-			else if(strcmp(id[i].typ,"float")==0){
-				symbols[bucket] = id[i].fval;
-				return symbols[bucket];		// returns the current variable's recognized float value according to its index
-			}	
-		}
-	}
-}
-
-
-/* updates the value of a given variable */
-void updateVal(char* variable, float value){
-	int i;
-	int toIntValue = value;
-	int bucket = compIdxVar(variable);
-
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){			
-				symbols[bucket] = toIntValue;
-				id[i].ival = symbols[bucket];		
-				break;
-			}
-			else if(strcmp(id[i].typ,"float")==0){
-				symbols[bucket] = value;
-				id[i].fval = symbols[bucket];
-				break;
-			}
-		}
-	}
-}
-
-/* saveThisVar saves the verified given variable and its given type to the struct identifiers */
-char* saveThisVar(char* variable, char* type){
-	strcpy(id[indexVar].var,variable);
-	strcpy(id[indexVar].typ,type);
-	indexVar++;		// Increments to the next ID index after saving the variable and type
-}
-
-/* saveThisVal saves any value to the struct identifiers */
-void saveThisVal(char* variable, float value){
-	int toIntValue = value;
-	int i;
-
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
-				id[indexVar].ival = toIntValue;				
-			}
-			else if(strcmp(id[i].typ,"float")==0){
-				id[indexVar].fval = value;	
-			}
-		}
-	}
-}
-
-/* checkVarDup checks any duplicate or redeclared given variable  */
-void checkVarDup(char* variable, char* type){
-	int i;
-	int flag=0;
-	char* temp;
-
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){	
-			flag=1;
-			break;
-		}
-	}
-	if(flag==1){
-		printf("\n****ERROR LINE %d: '%s' already declared!****",line,variable);	
-	}
-	else{
-		saveThisVar(variable,type);
-		printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);	
-	}
-}
-
-/* checkVarExist checks if the given variable exists during initialization */
-void checkVarExist(char* variable, float value){
-	int i;
-	int flag = 0;
-	char* temp;
-	
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
-				flag = 1;
-				break;			
-			}
-		}
-	}
-	if(flag==1){
-		saveThisVal(variable,value);
-		updateVal(variable,value);
-		printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
-	} else {
-		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
-	}
-}
-
-/* checkThisVar checks if the given variable initialized to another variable exists*/
-float checkThisVar(char* variable){
-	int i, toIntValue;
-	int flag = 0;
-	char* temp;
-
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
-				flag = 1;
-				break;			
-			}
-		}
-	}
-	if(flag==1){
-		return getValue(variable); // if exists, then it will invoke the getValue function
-	} else {
-		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
-	}
-}
-
-/* oneValPrint prints one given variable's value*/
-void oneValPrint(char* specifier, float value){
-	int toIntValue = value;
-
-	if(strcmp(specifier,"%d")==0){
-		printf("\nLINE %d Output: %d",line,toIntValue);
-	}
-	else if(strcmp(specifier,"%f")==0){
-		printf("\nLINE %d Output: %g",line,value);
-	}
-}
-
-/* oneValPrint prints two given variables' values*/
-void twoValPrint(char* specifier, char* specifier2, float value, float value2){
-	int toIntValue = value;
-	int toIntValue2 = value2;
-
-	if(strcmp(specifier,"%d")==0){
-		if(strcmp(specifier2,"%d")==0){
-			printf("\nLINE %d Output: %d%d",line,toIntValue,toIntValue2);
-		}
-		else{
-			printf("\nLINE %d Output: %d%g",line,toIntValue,value2);
-		}
-	}
-	else if(strcmp(specifier,"%f")==0){
-		if(strcmp(specifier2,"%f")==0){
-			printf("\nLINE %d Output: %g%g",line,value,value2);
-		}
-		else{
-			printf("\nLINE %d Output: %g%d",line,value,toIntValue2);
-		}
-	}
-}
-
-
-int main () {
-	
-	return yyparse();
-}
-
 
 /* Line 371 of yacc.c  */
-#line 274 "scriptc-yacc.tab.c"
+#line 79 "scriptc-yacc.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -321,11 +126,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 206 "scriptc-yacc.y"
+#line 11 "scriptc-yacc.y"
 int i; float f; char* s;
 
 /* Line 387 of yacc.c  */
-#line 329 "scriptc-yacc.tab.c"
+#line 134 "scriptc-yacc.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -353,7 +158,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 357 "scriptc-yacc.tab.c"
+#line 162 "scriptc-yacc.tab.c"
 
 #ifdef short
 # undef short
@@ -576,7 +381,7 @@ union yyalloc
 #define YYLAST   45
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  21
+#define YYNTOKENS  20
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
@@ -597,10 +402,10 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    19,     2,     2,     7,     2,     2,
-       8,     9,     5,     3,    20,     4,     2,     6,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    17,     2,
-       2,    18,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    12,     2,     2,     2,     2,     2,
+      18,    19,    16,    14,    13,    15,     2,    17,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    10,     2,
+       2,    11,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -619,8 +424,8 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,    10,    11,
-      12,    13,    14,    15,    16
+       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+       5,     6,     7,     8,     9
 };
 
 #if YYDEBUG
@@ -636,24 +441,24 @@ static const yytype_uint8 yyprhs[] =
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      22,     0,    -1,    23,    -1,    22,    23,    -1,    11,    17,
-      24,    -1,    11,    18,    26,    -1,    11,    17,    24,    18,
-      26,    -1,    25,    -1,    13,    -1,    14,    -1,    10,    17,
-      19,    15,    19,    -1,    10,    17,    19,    16,    19,    -1,
-      10,    17,    19,    12,    19,    20,    26,    -1,    10,    17,
-      19,    12,    12,    19,    20,    26,    20,    26,    -1,    27,
-      -1,    26,     3,    27,    -1,    26,     4,    27,    -1,    28,
-      -1,    27,     5,    28,    -1,    27,     6,    28,    -1,    29,
-      -1,     8,    26,     9,    -1,    11,    -1,    15,    -1,    16,
+      21,     0,    -1,    22,    -1,    21,    22,    -1,     4,    10,
+      23,    -1,     4,    11,    25,    -1,     4,    10,    23,    11,
+      25,    -1,    24,    -1,     6,    -1,     7,    -1,     3,    10,
+      12,     8,    12,    -1,     3,    10,    12,     9,    12,    -1,
+       3,    10,    12,     5,    12,    13,    25,    -1,     3,    10,
+      12,     5,     5,    12,    13,    25,    13,    25,    -1,    26,
+      -1,    25,    14,    26,    -1,    25,    15,    26,    -1,    27,
+      -1,    26,    16,    27,    -1,    26,    17,    27,    -1,    28,
+      -1,    18,    25,    19,    -1,     4,    -1,     8,    -1,     9,
       -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint16 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,   220,   220,   221,   225,   226,   227,   228,   232,   233,
-     237,   238,   239,   240,   244,   245,   246,   249,   250,   251,
-     254,   255,   259,   260,   261
+       0,    22,    22,    23,    27,    28,    29,    30,    34,    35,
+      39,    40,    41,    42,    46,    47,    48,    51,    52,    53,
+      56,    57,    61,    62,    63
 };
 #endif
 
@@ -662,9 +467,9 @@ static const yytype_uint16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "'+'", "'-'", "'*'", "'/'", "'%'", "'('",
-  "')'", "display", "IDENTIFIER", "SPECIFIER", "INT", "FLOAT", "INTEGERS",
-  "DECIMALS", "':'", "'='", "'\"'", "','", "$accept", "program",
+  "$end", "error", "$undefined", "display", "IDENTIFIER", "SPECIFIER",
+  "INT", "FLOAT", "INTEGERS", "DECIMALS", "':'", "'='", "'\"'", "','",
+  "'+'", "'-'", "'*'", "'/'", "'('", "')'", "$accept", "program",
   "statements", "type", "print", "expr", "term", "factor", "values", YY_NULL
 };
 #endif
@@ -674,18 +479,17 @@ static const char *const yytname[] =
    token YYLEX-NUM.  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,    43,    45,    42,    47,    37,    40,    41,
-     258,   259,   260,   261,   262,   263,   264,    58,    61,    34,
-      44
+       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
+      58,    61,    34,    44,    43,    45,    42,    47,    40,    41
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    21,    22,    22,    23,    23,    23,    23,    24,    24,
-      25,    25,    25,    25,    26,    26,    26,    27,    27,    27,
-      28,    28,    29,    29,    29
+       0,    20,    21,    21,    22,    22,    22,    22,    23,    23,
+      24,    24,    24,    24,    25,    25,    25,    26,    26,    26,
+      27,    27,    28,    28,    28
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -702,7 +506,7 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     2,     7,     0,     0,     0,     1,
-       3,     0,     8,     9,     4,     0,    22,    23,    24,     5,
+       3,     0,     8,     9,     4,    22,    23,    24,     0,     5,
       14,    17,    20,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,    10,    11,     6,    21,    15,    16,
       18,    19,     0,     0,     0,    12,     0,     0,    13
@@ -716,20 +520,20 @@ static const yytype_int8 yydefgoto[] =
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -16
+#define YYPACT_NINF -19
 static const yytype_int8 yypact[] =
 {
-      -6,    -7,   -11,     3,   -16,   -16,     5,     8,     1,   -16,
-     -16,    11,   -16,   -16,    19,     1,   -16,   -16,   -16,    27,
-      28,   -16,   -16,    -4,    22,    23,     1,    16,     1,     1,
-       1,     1,    24,    18,   -16,   -16,    27,   -16,    28,    28,
-     -16,   -16,    25,     1,     1,    27,    -2,     1,    27
+      27,    -8,     1,    16,   -19,   -19,    -5,    26,    -3,   -19,
+     -19,    19,   -19,   -19,    -7,   -19,   -19,   -19,    -3,    20,
+      21,   -19,   -19,    -2,     5,    24,    -3,    -1,    -3,    -3,
+      -3,    -3,    29,    -4,   -19,   -19,    20,   -19,    21,    21,
+     -19,   -19,    31,    -3,    -3,    20,     8,    -3,    20
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,    41,   -16,   -16,   -15,     7,     9,   -16
+     -19,   -19,    42,   -19,   -19,   -18,    11,    12,   -19
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -738,37 +542,37 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      27,    28,    29,     9,     1,     2,     7,     8,    32,    15,
-       6,    36,    16,     1,     2,    33,    17,    18,    47,    28,
-      29,    12,    13,    23,    11,    37,    24,    25,    45,    46,
-      28,    29,    48,    30,    31,    38,    39,    26,    43,    40,
-      41,    34,    35,    42,    10,    44
+      27,    15,     6,    32,    26,    16,    17,    11,    36,    43,
+      33,     7,     8,    28,    29,    18,     9,    34,    37,     1,
+       2,    47,    28,    29,    23,    45,    46,    24,    25,    48,
+       1,     2,    12,    13,    28,    29,    35,    30,    31,    38,
+      39,    42,    40,    41,    44,    10
 };
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-16)))
+  (!!((Yystate) == (-19)))
 
 #define yytable_value_is_error(Yytable_value) \
   YYID (0)
 
 static const yytype_uint8 yycheck[] =
 {
-      15,     3,     4,     0,    10,    11,    17,    18,    12,     8,
-      17,    26,    11,    10,    11,    19,    15,    16,    20,     3,
-       4,    13,    14,    12,    19,     9,    15,    16,    43,    44,
-       3,     4,    47,     5,     6,    28,    29,    18,    20,    30,
-      31,    19,    19,    19,     3,    20
+      18,     4,    10,     5,    11,     8,     9,    12,    26,    13,
+      12,    10,    11,    14,    15,    18,     0,    12,    19,     3,
+       4,    13,    14,    15,     5,    43,    44,     8,     9,    47,
+       3,     4,     6,     7,    14,    15,    12,    16,    17,    28,
+      29,    12,    30,    31,    13,     3
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    10,    11,    22,    23,    25,    17,    17,    18,     0,
-      23,    19,    13,    14,    24,     8,    11,    15,    16,    26,
-      27,    28,    29,    12,    15,    16,    18,    26,     3,     4,
-       5,     6,    12,    19,    19,    19,    26,     9,    27,    27,
-      28,    28,    19,    20,    20,    26,    26,    20,    26
+       0,     3,     4,    21,    22,    24,    10,    10,    11,     0,
+      22,    12,     6,     7,    23,     4,     8,     9,    18,    25,
+      26,    27,    28,     5,     8,     9,    11,    25,    14,    15,
+      16,    17,     5,    12,    12,    12,    25,    19,    26,    26,
+      27,    27,    12,    13,    13,    25,    25,    13,    25
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1570,139 +1374,139 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 220 "scriptc-yacc.y"
+#line 22 "scriptc-yacc.y"
     {line++;}
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 221 "scriptc-yacc.y"
+#line 23 "scriptc-yacc.y"
     {line++;}
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 225 "scriptc-yacc.y"
+#line 27 "scriptc-yacc.y"
     {checkVarDup((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].s));}
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 226 "scriptc-yacc.y"
+#line 28 "scriptc-yacc.y"
     {checkVarExist((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].f));}
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 227 "scriptc-yacc.y"
+#line 29 "scriptc-yacc.y"
     {checkVarDup((yyvsp[(1) - (5)].s),(yyvsp[(3) - (5)].s)); checkVarExist((yyvsp[(1) - (5)].s),(yyvsp[(5) - (5)].f));}
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 232 "scriptc-yacc.y"
+#line 34 "scriptc-yacc.y"
     {(yyval.s) = (yyvsp[(1) - (1)].s);}
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 233 "scriptc-yacc.y"
+#line 35 "scriptc-yacc.y"
     {(yyval.s) = (yyvsp[(1) - (1)].s);}
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 237 "scriptc-yacc.y"
+#line 39 "scriptc-yacc.y"
     {printf("%d",(yyvsp[(4) - (5)].i));}
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 238 "scriptc-yacc.y"
+#line 40 "scriptc-yacc.y"
     {printf("%f",(yyvsp[(4) - (5)].f));}
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 239 "scriptc-yacc.y"
+#line 41 "scriptc-yacc.y"
     {oneValPrint((yyvsp[(4) - (7)].s),(yyvsp[(7) - (7)].f));}
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 240 "scriptc-yacc.y"
+#line 42 "scriptc-yacc.y"
     {twoValPrint((yyvsp[(4) - (10)].s),(yyvsp[(5) - (10)].s),(yyvsp[(8) - (10)].f),(yyvsp[(10) - (10)].f));}
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 244 "scriptc-yacc.y"
+#line 46 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (1)].f);}
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 245 "scriptc-yacc.y"
+#line 47 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) + (yyvsp[(3) - (3)].f);}
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 246 "scriptc-yacc.y"
+#line 48 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) - (yyvsp[(3) - (3)].f);}
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 249 "scriptc-yacc.y"
+#line 51 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (1)].f);}
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 250 "scriptc-yacc.y"
+#line 52 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) * (yyvsp[(3) - (3)].f);}
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 251 "scriptc-yacc.y"
+#line 53 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) / (yyvsp[(3) - (3)].f);}
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 254 "scriptc-yacc.y"
+#line 56 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(1) - (1)].f);}
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 255 "scriptc-yacc.y"
+#line 57 "scriptc-yacc.y"
     {(yyval.f) = (yyvsp[(2) - (3)].f);}
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 259 "scriptc-yacc.y"
+#line 61 "scriptc-yacc.y"
     {(yyval.f) = checkThisVar((yyvsp[(1) - (1)].s));}
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 260 "scriptc-yacc.y"
+#line 62 "scriptc-yacc.y"
     {(yyval.f)=(yyvsp[(1) - (1)].i);}
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 261 "scriptc-yacc.y"
+#line 63 "scriptc-yacc.y"
     {(yyval.f)=(yyvsp[(1) - (1)].f);}
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1706 "scriptc-yacc.tab.c"
+#line 1510 "scriptc-yacc.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1934,5 +1738,10 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 264 "scriptc-yacc.y"
+#line 66 "scriptc-yacc.y"
                     
+
+int main (void) {
+	return yyparse();
+}
+void yyerror (char *s) {fprintf (stderr, "%s\n", s);}
