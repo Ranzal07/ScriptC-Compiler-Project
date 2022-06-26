@@ -19,4 +19,3 @@ display:"%f",numya
 display:"%f",numyad
 
 
-

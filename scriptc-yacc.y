@@ -37,9 +37,7 @@ type		:	INT																{$$ = $1;}
 			;
 
 /* expected inputs for the print statement */
-print		:	display ':' '"' INTEGERS '"'									{printf("%d",$4);}
-			|	display ':' '"' DECIMALS '"'									{printf("%f",$4);}
-			|	display ':' '"' SPECIFIER '"' ',' expr							{oneValPrint($4,$7);}
+print		:	display ':' '"' SPECIFIER '"' ',' expr							{oneValPrint($4,$7);}
 			|	display ':' '"' SPECIFIER SPECIFIER '"' ',' expr ',' expr		{twoValPrint($4,$5,$8,$10);}
 			;
 
