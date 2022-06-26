@@ -237,19 +237,21 @@ print		:	display ':' '"' INTEGERS '"'									{printf("%d",$4);}
 			|	display ':' '"' SPECIFIER SPECIFIER '"' ',' expr ',' expr		{twoValPrint($4,$5,$8,$10);}
 			;
 
-/* int_exp can be either term or arithmetic expression */
+/* expected inputs for the arithmetic statement */
 expr    	:	term															{$$ = $1;}
        	    |	expr '+' term													{$$ = $1 + $3;}
        	    |	expr '-' term													{$$ = $1 - $3;}
        	    ;
 
+/* after parameter, multiplication will be calculate first, then division */
 term		: factor															{$$ = $1;}
-        	| term '*' factor													{$$ = $1 * $3;}
+        	| term '*' factor													{$$ = $1 * $3;}		
         	| term '/' factor													{$$ = $1 / $3;}
         	;
 
+/* parameters will have higher precedence based on PEMDAS*/
 factor		: values															{$$ = $1;}
-			| '(' expr ')'														{$$ = $2;}
+			| '(' expr ')'														{$$ = $2;}		
 			;
 
 /* term can be either int or float or variable holding the value */
