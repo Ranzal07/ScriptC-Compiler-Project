@@ -7,21 +7,21 @@
 %}
 
 %%
-"display"			                    {return display;}
+"display"                           {return display;}
 
-"int"                                   {yylval.s = strdup(yytext); return INT;}
-"float"                                 {yylval.s = strdup(yytext); return FLOAT;}
-"%d"|"%f"                               {yylval.s = strdup(yytext); return SPECIFIER;}
+"int"                               {yylval.s = strdup(yytext); return INT;}
+"float"                             {yylval.s = strdup(yytext); return FLOAT;}
+"%d"|"%f"                           {yylval.s = strdup(yytext); return SPECIFIER;}
                              
-[-]?[0-9]+                              {yylval.i = atoi(yytext); return INTEGERS;}
-[-]?[0-9]+\.[0-9]+                      {yylval.f = atof(yytext); return DECIMALS;}       
-[a-zA-Z_]+			                    {yylval.s = strdup(yytext); return IDENTIFIER;}
+[-]?[0-9]+                          {yylval.i = atoi(yytext); return INTEGERS;}
+[-]?[0-9]+\.[0-9]+                  {yylval.f = atof(yytext); return DECIMALS;}       
+[a-zA-Z_]+                          {yylval.s = strdup(yytext); return IDENTIFIER;}
 
 
 
-[ \t\n]                                 ;
-[-+*/=":,]           	                {return yytext[0];}
-.                                       {ECHO; yyerror ("unexpected character");}
+[ \t\n]                             ;
+[-+*/=":,]                          {return yytext[0];}
+.                                   {ECHO; yyerror ("unexpected character");}
 
 %%
 int yywrap (void) {return 1;}

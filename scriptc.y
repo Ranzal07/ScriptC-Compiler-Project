@@ -242,14 +242,14 @@ program     : statements {line++;};
 			| program statements {line++;};
 			;
 
-statements  : IDENTIFIER ':' type                                               {checkVarDup($1,$3);}
-			| IDENTIFIER '=' expr                                  			    {checkVarExist($1,$3);}
-			| IDENTIFIER ':' type '=' expr                                  	{checkVarDup($1,$3); checkVarExist($1,$5);}
+statements  : IDENTIFIER ':' type												{checkVarDup($1,$3);}
+			| IDENTIFIER '=' expr												{checkVarExist($1,$3);}
+			| IDENTIFIER ':' type '=' expr										{checkVarDup($1,$3); checkVarExist($1,$5);}
 			| print
 			;
 
 /* type can be either INT or FLOAT */
-type		: INT 																{$$ = $1;}
+type		: INT																{$$ = $1;}
 			| FLOAT																{$$ = $1;}
 			;
 
@@ -261,17 +261,17 @@ print		: display ':' '"' INTEGERS '"'										{printf("%d",$4);}
 			;
 
 /* int_exp can be either term or arithmetic expression */
-expr    	: term 																{$$ = $1;}
+expr    	: term																{$$ = $1;}
        	    | expr '+' term														{$$ = $1 + $3;}
        	    | expr '-' term														{$$ = $1 - $3;}
-            | expr '*' term                                                		{$$ = $1 * $3;}
+            | expr '*' term														{$$ = $1 * $3;}
        	    | expr '/' term														{$$ = $1 / $3;}
        	    ;
 
 /* term can be either int or float or variable holding the value */
-term		: IDENTIFIER                                                        {$$ = checkThisVar($1);}
-			| INTEGERS                                               		    {$$=$1;}
-			| DECIMALS                                               		    {$$=$1;}
+term		: IDENTIFIER														{$$ = checkThisVar($1);}
+			| INTEGERS															{$$=$1;}
+			| DECIMALS															{$$=$1;}
 			;
 
 %%                    
