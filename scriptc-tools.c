@@ -26,7 +26,6 @@ int compIdxVar(char* variable){
 /* getValue gets the given variable's int or float value and return it to the IDENTIFIER token */
 float getValue(char* variable){	
 	int i;
-	int flag = 0;
 	
 	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
