@@ -36,7 +36,7 @@ float getValue(char* variable){
 	int i;
 	int flag = 0;
 	
-	int bucket = compIdxVar(variable); // recognized variable will be initialized to the bucket variable
+	int bucket = compIdxVar(variable); // recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
