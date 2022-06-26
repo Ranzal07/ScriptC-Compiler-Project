@@ -8,7 +8,7 @@ int indexVar=0;		// for incrementing variable indexes
 /*struct for storing ID or Variable data*/
 typedef struct indentifiers{
 	char var[1000];		// var stores variable names
-	char typ[1000];		// type stores variable's type
+	char typ[1000];		// typ stores variable's type
 	int ival;		// ival stores int type values
 	float fval;		// fval stores float type values
 } identifier;
