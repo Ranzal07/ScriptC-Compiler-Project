@@ -72,19 +72,19 @@
 extern int yylex();
 void yyerror (char *strError);	
 
-int line=1;			// for getting incremented line numbers
-int indexVar=0;		// for incrementing variables
+int line=1;			// for getting incremented line number indexes
+int indexVar=0;		// for incrementing variable indexes
 
 /*struct for storing ID or Variable data*/
 typedef struct indentifiers{
-	char var[1000];
-	char typ[1000];
-	int ival;
-	float fval;
+	char var[1000];		// var stores variable names
+	char typ[1000];		// type stores variable's type
+	int ival;			// ival stores int type values
+	float fval;			// fval stores float type values
 } identifier;
 
 float symbols[1000]; // symbols store values to the identifier
-identifier id[1000]; // id will be the variable for the struct
+identifier id[1000]; // id will be the struct variable name and has 1000 indexes to store data
 
 void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
  
@@ -145,7 +145,7 @@ char* saveThisVar(char* variable, char* type){
 	indexVar++; // Increments to the next ID index after saving the variable and type
 }
 
-/* saveThisVar saves the verified given variable and its type to the struct identifiers */
+/* saveThisVal saves any value to the struct identifiers */
 void saveThisVal(char* variable, float value){
 	int toIntValue = value;
 	int i;

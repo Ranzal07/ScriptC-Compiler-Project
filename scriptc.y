@@ -17,8 +17,8 @@ typedef struct indentifiers{
 	float fval;			// fval stores float type values
 } identifier;
 
-float symbols[1000]; // symbols store values to the identifier
-identifier id[1000]; // id will be the struct variable name and has 1000 indexes to store data
+float symbols[1000];		// symbols store values to the identifier
+identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
 
 void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
  
@@ -34,16 +34,16 @@ float getValue(char* variable){
 	int i;
 	int flag = 0;
 	
-	int bucket = compIdxVar(variable); // recognized variable index will be initialized to the bucket variable
+	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
 				symbols[bucket] = id[i].ival;	
-				return symbols[bucket];	// returns the given variable's recognized int value according to its index
+				return symbols[bucket];		// returns the given variable's recognized int value according to its index
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				symbols[bucket] = id[i].fval;
-				return symbols[bucket];	// returns the current variable's recognized float value according to its index
+				return symbols[bucket];		// returns the current variable's recognized float value according to its index
 			}	
 		}
 	}
@@ -76,7 +76,7 @@ void updateVal(char* variable, float value){
 char* saveThisVar(char* variable, char* type){
 	strcpy(id[indexVar].var,variable);
 	strcpy(id[indexVar].typ,type);
-	indexVar++; // Increments to the next ID index after saving the variable and type
+	indexVar++;		// Increments to the next ID index after saving the variable and type
 }
 
 /* saveThisVal saves any value to the struct identifiers */
