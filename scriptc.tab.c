@@ -105,11 +105,11 @@ float getValue(char* variable){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
 				symbols[bucket] = id[i].ival;	
-				return symbols[bucket];	// returns the given variable's recognized int value
+				return symbols[bucket];	// returns the given variable's recognized int value according to its index
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				symbols[bucket] = id[i].fval;
-				return symbols[bucket];	// returns the current variable's recognized float value
+				return symbols[bucket];	// returns the current variable's recognized float value according to its index
 			}	
 		}
 	}
