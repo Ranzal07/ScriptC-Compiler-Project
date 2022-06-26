@@ -67,7 +67,7 @@ void updateVal(char* variable, float value){
 }
 
 /* saveThisVar saves the verified given variable and its given type to the struct identifiers */
-char* saveThisVar(char* variable, char* type){
+void saveThisVar(char* variable, char* type){
 	strcpy(id[indexVar].var,variable);
 	strcpy(id[indexVar].typ,type);
 	indexVar++;		// Increments to the next ID index after saving the variable and type
@@ -107,7 +107,7 @@ void checkVarDup(char* variable, char* type){
 	}
 	else{
 		saveThisVar(variable,type);
-		printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);	
+		// printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);	
 	}
 }
 
@@ -128,7 +128,7 @@ void checkVarExist(char* variable, float value){
 	if(flag==1){
 		saveThisVal(variable,value);
 		updateVal(variable,value);
-		printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
+		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
 		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
 	}
