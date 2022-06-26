@@ -282,11 +282,11 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 11
-#define YY_END_OF_BUFFER 12
+#define YY_NUM_RULES 12
+#define YY_END_OF_BUFFER 13
 static yyconst short int yy_accept[33] =
     {   0,
-        0,    0,   12,   10,    8,    8,    9,   10,    9,    5,
+        0,    0,   13,   11,    9,    8,   10,   11,   10,    5,
         7,    7,    7,    7,    4,    5,    0,    7,    7,    7,
         7,    6,    7,    7,    2,    7,    7,    7,    3,    7,
         1,    0
@@ -660,25 +660,30 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
+#line 19 "scriptc-lex.l"
+{return NEWLINE;}
+	YY_BREAK
+case 9:
+YY_RULE_SETUP
 #line 22 "scriptc-lex.l"
 ;
 	YY_BREAK
-case 9:
+case 10:
 YY_RULE_SETUP
 #line 23 "scriptc-lex.l"
 {return yytext[0];}
 	YY_BREAK
-case 10:
+case 11:
 YY_RULE_SETUP
 #line 24 "scriptc-lex.l"
 {ECHO; yyerror ("unexpected character");}
 	YY_BREAK
-case 11:
+case 12:
 YY_RULE_SETUP
 #line 26 "scriptc-lex.l"
 ECHO;
 	YY_BREAK
-#line 682 "lex.yy.c"
+#line 687 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

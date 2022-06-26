@@ -49,10 +49,11 @@ extern int yydebug;
      display = 258,
      IDENTIFIER = 259,
      SPECIFIER = 260,
-     INT = 261,
-     FLOAT = 262,
-     INTEGERS = 263,
-     DECIMALS = 264
+     NEWLINE = 261,
+     INT = 262,
+     FLOAT = 263,
+     INTEGERS = 264,
+     DECIMALS = 265
    };
 #endif
 
@@ -65,7 +66,7 @@ typedef union YYSTYPE
 int i; float f; char* s;
 
 /* Line 2058 of yacc.c  */
-#line 69 "scriptc-yacc.tab.h"
+#line 70 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

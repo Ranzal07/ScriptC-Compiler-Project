@@ -11,7 +11,7 @@ void yyerror (char *strError);
 %union {int i; float f; char* s;}     
 
     /* Yacc definitions */
-%token display <s> IDENTIFIER SPECIFIER INT FLOAT <i> INTEGERS <f> DECIMALS
+%token <s> display IDENTIFIER SPECIFIER NEWLINE INT FLOAT <i> INTEGERS <f> DECIMALS
 %type <f> expr term factor values
 %type <s> type
 %%
@@ -19,8 +19,8 @@ void yyerror (char *strError);
 /* descriptions of expected inputs corresponding actions (in C) */
 
 /* main line */
-program		:	statements														{line++;}
-			|	program statements												{line++;}
+program		:	statements														
+			|	program statements												
 			;
 
 /* expected inputs for the variable declaration & initialization */
@@ -28,6 +28,7 @@ statements	:	IDENTIFIER ':' type												{checkVarDup($1,$3);}
 			|	IDENTIFIER '=' expr												{checkVarExist($1,$3);}
 			|	IDENTIFIER ':' type '=' expr									{checkVarDup($1,$3); checkVarExist($1,$5);}
 			|	print
+			|	NEWLINE															{line++;}
 			;
 
 /* type can be either INT or FLOAT */
