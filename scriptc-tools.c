@@ -45,7 +45,7 @@ float getValue(char* variable){
 /* updateVal updates the given variable's value when given another new values */
 void updateVal(char* variable, float value){
 	int i;
-	int toIntValue = value;
+	int toIntValue = (int)value;		// typecasting to int or to convert float value datatype to int
 	int bucket = compIdxVar(variable);
 
 	for(i=0;i<indexVar;i++){
@@ -74,7 +74,7 @@ void saveThisVar(char* variable, char* type){
 /* saveThisVal saves any value to the struct identifiers */
 void saveThisVal(char* variable, float value){
 	int i;
-	int toIntValue = value;
+	int toIntValue = (int)value;
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
@@ -152,7 +152,7 @@ float checkThisVar(char* variable){
 
 /* oneValPrint prints one given variable's value*/
 void oneValPrint(char* specifier, float value){
-	int toIntValue = value;
+	int toIntValue = (int)value;
 
 	if(strcmp(specifier,"%d")==0){
 		printf("\nLINE %d Output: %d",line,toIntValue);
@@ -164,8 +164,8 @@ void oneValPrint(char* specifier, float value){
 
 /* oneValPrint prints two given variables' values*/
 void twoValPrint(char* specifier, char* specifier2, float value, float value2){
-	int toIntValue = value;
-	int toIntValue2 = value2;
+	int toIntValue = (int)value;
+	int toIntValue2 = (int)value2;
 
 	if(strcmp(specifier,"%d")==0){
 		if(strcmp(specifier2,"%d")==0){
