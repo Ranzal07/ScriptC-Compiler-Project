@@ -379,9 +379,9 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "scriptc.l"
+#line 1 "scriptc-lex.l"
 #define INITIAL 0
-#line 2 "scriptc.l"
+#line 2 "scriptc-lex.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -538,7 +538,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 9 "scriptc.l"
+#line 9 "scriptc-lex.l"
 
 #line 544 "lex.yy.c"
 
@@ -625,57 +625,57 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "scriptc.l"
+#line 10 "scriptc-lex.l"
 {return display;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "scriptc.l"
+#line 12 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return INT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 13 "scriptc.l"
+#line 13 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return FLOAT;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "scriptc.l"
+#line 14 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return SPECIFIER;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "scriptc.l"
+#line 16 "scriptc-lex.l"
 {yylval.i = atoi(yytext); return INTEGERS;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "scriptc.l"
+#line 17 "scriptc-lex.l"
 {yylval.f = atof(yytext); return DECIMALS;}       
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "scriptc.l"
+#line 18 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return IDENTIFIER;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "scriptc.l"
+#line 22 "scriptc-lex.l"
 ;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "scriptc.l"
+#line 23 "scriptc-lex.l"
 {return yytext[0];}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "scriptc.l"
+#line 24 "scriptc-lex.l"
 {ECHO; yyerror ("unexpected character");}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 26 "scriptc.l"
+#line 26 "scriptc-lex.l"
 ECHO;
 	YY_BREAK
 #line 682 "lex.yy.c"
@@ -1564,6 +1564,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 26 "scriptc.l"
+#line 26 "scriptc-lex.l"
 
 int yywrap (void) {return 1;}
