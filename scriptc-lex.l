@@ -11,7 +11,7 @@
 
 "int"                               {yylval.s = strdup(yytext); return INT;}
 "float"                             {yylval.s = strdup(yytext); return FLOAT;}
-"%d"|"%f"                           {yylval.s = strdup(yytext); return SPECIFIER;}
+"%d"|"%"                           {yylval.s = strdup(yytext); return SPECIFIER;}
                              
 [-]?[0-9]+                          {yylval.i = atoi(yytext); return INTEGERS;}
 [-]?[0-9]+\.[0-9]+                  {yylval.f = atof(yytext); return DECIMALS;}       
