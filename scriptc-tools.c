@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-int line=1;		// for getting incremented line number indexes
-int indexVar=0;		// for incrementing variable indexes
+int line = 1;		// for getting incremented line number indexes
+int indexVar = 0;		// for incrementing variable indexes
 
 /*struct for storing ID or Variable data*/
 typedef struct indentifiers{
