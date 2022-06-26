@@ -204,6 +204,9 @@ int main () {
 
 %}
 %union {int i; float f; char* s;}     
+%left '+' '-'
+%left '*' '/' '%'
+%left '(' ')'
 
     /* Yacc definitions */
 %token display <s> IDENTIFIER SPECIFIER INT FLOAT <i> INTEGERS <f> DECIMALS
@@ -243,13 +246,11 @@ expr    	:	term															{$$ = $1;}
        	    |	expr '-' term													{$$ = $1 - $3;}
        	    ;
 
-/* after parameter, multiplication will be calculate first, then division */
 term		: factor															{$$ = $1;}
         	| term '*' factor													{$$ = $1 * $3;}		
         	| term '/' factor													{$$ = $1 / $3;}
         	;
 
-/* parameters will have higher precedence based on PEMDAS*/
 factor		: values															{$$ = $1;}
 			| '(' expr ')'														{$$ = $2;}		
 			;
