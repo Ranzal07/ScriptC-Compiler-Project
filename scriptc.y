@@ -242,6 +242,7 @@ program		:	statements														{line++;}
 			|	program statements												{line++;}
 			;
 
+/* expected inputs for the variable declaration & initialization */
 statements	:	IDENTIFIER ':' type												{checkVarDup($1,$3);}
 			|	IDENTIFIER '=' expr												{checkVarExist($1,$3);}
 			|	IDENTIFIER ':' type '=' expr									{checkVarDup($1,$3); checkVarExist($1,$5);}
