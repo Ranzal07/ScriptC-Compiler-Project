@@ -9,8 +9,8 @@ int indexVar=0;		// for incrementing variable indexes
 typedef struct indentifiers{
 	char var[1000];		// var stores variable names
 	char typ[1000];		// type stores variable's type
-	int ival;			// ival stores int type values
-	float fval;			// fval stores float type values
+	int ival;		// ival stores int type values
+	float fval;		// fval stores float type values
 } identifier;
 
 float symbols[1000];		// symbols store values to the identifier
@@ -73,8 +73,8 @@ void saveThisVar(char* variable, char* type){
 
 /* saveThisVal saves any value to the struct identifiers */
 void saveThisVal(char* variable, float value){
-	int toIntValue = value;
 	int i;
+	int toIntValue = value;
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
