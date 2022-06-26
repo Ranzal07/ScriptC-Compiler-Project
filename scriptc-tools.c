@@ -42,7 +42,6 @@ float getValue(char* variable){
 	}
 }
 
-
 /* updateVal updates the given variable's value when given another new values */
 void updateVal(char* variable, float value){
 	int i;
