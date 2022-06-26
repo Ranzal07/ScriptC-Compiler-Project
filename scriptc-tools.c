@@ -30,7 +30,7 @@ float getValue(char* variable){
 	
 	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
+		if(strcmp(id[i].var,variable)==0){		// <-- this means if the struct id.var is equal to the current variable name
 			if(strcmp(id[i].typ,"int")==0){
 				symbols[bucket] = id[i].ival;	
 				return symbols[bucket];		// returns the given variable's recognized int value according to its index
@@ -44,7 +44,7 @@ float getValue(char* variable){
 }
 
 
-/* updates the value of a given variable */
+/* updateVal updates the given variable's value when given another new values */
 void updateVal(char* variable, float value){
 	int i;
 	int toIntValue = value;
@@ -54,12 +54,12 @@ void updateVal(char* variable, float value){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){			
 				symbols[bucket] = toIntValue;
-				id[i].ival = symbols[bucket];		
+				id[i].ival = symbols[bucket];		// new int values will be saved to the struct identifiers (id.ival)		
 				break;
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				symbols[bucket] = value;
-				id[i].fval = symbols[bucket];
+				id[i].fval = symbols[bucket];		// new float values will be saved to the struct identifiers (id.fval)
 				break;
 			}
 		}
