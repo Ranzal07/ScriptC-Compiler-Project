@@ -106,7 +106,7 @@ void checkVarDup(char* variable, char* type){
 		printf("\n****ERROR LINE %d: '%s' already declared!****",line,variable);	
 	}
 	else{
-		saveThisVar(variable,type);
+		saveThisVar(variable,type);		// otherwise, it will invoke the saveThisVar function to save the variable and its type
 		// printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);	
 	}
 }
@@ -126,8 +126,8 @@ void checkVarExist(char* variable, float value){
 		}
 	}
 	if(flag==1){
-		saveThisVal(variable,value);
-		updateVal(variable,value);
+		saveThisVal(variable,value);	//	if exists, it will invoke the saveThisVar function to save the variable's value
+		updateVal(variable,value);		// then, it will invoke the updateVal function to update the variable's value
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
 		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
