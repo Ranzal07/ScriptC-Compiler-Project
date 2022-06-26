@@ -2,7 +2,7 @@ n:int
 nu:int
 nu=-10
 n=5
-num:int=19
+num:int=19+1*2
 display:"%d",n
 numyad:float
 numy:float=16.3+5

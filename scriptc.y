@@ -207,7 +207,7 @@ int main () {
 
     /* Yacc definitions */
 %token display <s> IDENTIFIER SPECIFIER INT FLOAT <i> INTEGERS <f> DECIMALS
-%type <f> expr term
+%type <f> expr term factor values
 %type <s> type
 %%
 
@@ -241,12 +241,19 @@ print		:	display ':' '"' INTEGERS '"'									{printf("%d",$4);}
 expr    	:	term															{$$ = $1;}
        	    |	expr '+' term													{$$ = $1 + $3;}
        	    |	expr '-' term													{$$ = $1 - $3;}
-            |	expr '*' term													{$$ = $1 * $3;}
-       	    |	expr '/' term													{$$ = $1 / $3;}
        	    ;
 
+term		: factor															{$$ = $1;}
+        	| term '*' factor													{$$ = $1 * $3;}
+        	| term '/' factor													{$$ = $1 / $3;}
+        	;
+
+factor		: values															{$$ = $1;}
+			| '(' expr ')'														{$$ = $2;}
+			;
+
 /* term can be either int or float or variable holding the value */
-term		:	IDENTIFIER														{$$ = checkThisVar($1);}
+values		:	IDENTIFIER														{$$ = checkThisVar($1);}
 			|	INTEGERS														{$$=$1;}
 			|	DECIMALS														{$$=$1;}
 			;
