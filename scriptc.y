@@ -18,7 +18,7 @@ typedef struct indentifiers{
 } identifier;
 
 float symbols[1000]; // symbols store values to the identifier
-identifier id[1000]; // id will be the variable for the struct
+identifier id[1000]; // id will be the struct variable name and has 1000 indexes to store data
 
 void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
  
