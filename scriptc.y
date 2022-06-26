@@ -103,11 +103,9 @@ void checkVarDup(char* variable, char* type){
 	char* temp;
 
 	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,id[indexVar].typ)==0){
-				flag=1;
-				break;
-			}
+		if(strcmp(id[i].var,variable)==0){	
+			flag=1;
+			break;
 		}
 	}
 	if(flag==1){
