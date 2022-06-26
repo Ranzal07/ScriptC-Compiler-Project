@@ -92,12 +92,11 @@ void saveThisVal(char* variable, float value){
 /* checkVarDup checks any duplicate or redeclared given variable  */
 void checkVarDup(char* variable, char* type){
 	int i;
-	int flag=0;
-	char* temp;
+	int flag = 0;
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){	
-			flag=1;
+			flag = 1;
 			break;
 		}
 	}
@@ -114,7 +113,6 @@ void checkVarDup(char* variable, char* type){
 void checkVarExist(char* variable, float value){
 	int i;
 	int flag = 0;
-	char* temp;
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
@@ -135,9 +133,8 @@ void checkVarExist(char* variable, float value){
 
 /* checkThisVar checks if the given variable initialized to another variable exists*/
 float checkThisVar(char* variable){
-	int i, toIntValue;
+	int i;
 	int flag = 0;
-	char* temp;
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
@@ -164,7 +161,6 @@ void oneValPrint(char* specifier, float value){
 	else if(strcmp(specifier,"%f")==0){
 		printf("\nLINE %d Output: %g",line,value);
 	}
-	
 }
 
 /* oneValPrint prints two given variables' values*/
