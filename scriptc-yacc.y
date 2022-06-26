@@ -49,13 +49,13 @@ expr    	:	term															{$$ = $1;}
        	    |	expr '-' term													{$$ = $1 - $3;}
        	    ;
 
-term		: factor															{$$ = $1;}
-        	| term '*' factor													{$$ = $1 * $3;}		
-        	| term '/' factor													{$$ = $1 / $3;}
+term		:	factor															{$$ = $1;}
+        	|	term '*' factor													{$$ = $1 * $3;}		
+        	|	term '/' factor													{$$ = $1 / $3;}
         	;
 
-factor		: values															{$$ = $1;}
-			| '(' expr ')'														{$$ = $2;}		
+factor		:	values															{$$ = $1;}
+			|	'(' expr ')'													{$$ = $2;}		
 			;
 
 /* term can be either int or float or variable holding the value */
