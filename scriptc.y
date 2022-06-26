@@ -6,8 +6,8 @@
 extern int yylex();
 void yyerror (char *strError);	
 
-int line=1;			// for getting incremented line numbers
-int indexVar=0;		// for incrementing variables
+int line=1;			// for getting incremented line number indexes
+int indexVar=0;		// for incrementing variable indexes
 
 /*struct for storing ID or Variable data*/
 typedef struct indentifiers{
