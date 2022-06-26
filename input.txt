@@ -2,6 +2,7 @@ n : int
 nu : int
 nu = -10
 n = 5
+nina = 43
 num : int = 1+2*19
 display : "%d",n
 numyad : float
@@ -9,6 +10,7 @@ numy : float = 16.3+5
 numyad = -30.3 + numy
 numya : float
 numya = -25.2
+n = 13
 n : float
 
 display : "%d" , n
