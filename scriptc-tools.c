@@ -126,7 +126,7 @@ void checkVarExist(char* variable, float value){
 		}
 	}
 	if(flag==1){
-		saveThisVal(variable,value);	// if exists, it will invoke the saveThisVar function to save the variable's value
+		saveThisVal(variable,value);		// if exists, it will invoke the saveThisVar function to save the variable's value
 		updateVal(variable,value);		// then, it will invoke the updateVal function to update the variable's value
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
