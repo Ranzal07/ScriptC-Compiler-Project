@@ -9,7 +9,7 @@ numy:float=16.3+5
 numyad=-30.3+numy
 numya:float
 numya=-25.2
-
+n:float
 
 display:"%d",n
 display:"%d",nu
