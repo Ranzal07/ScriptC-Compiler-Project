@@ -2,14 +2,12 @@ n:int
 nu:int
 nu=10
 n=5
-num:int
-num=15
+num:int=19
 numyad:float
-numy:float
-numyad=30.3
+numy:float=16.3+5.3
+numyad=30.3+numy
 numya:float
 numya=25.2
-numy=20.1
 
 display:"%d",n
 display:"%d",nu
