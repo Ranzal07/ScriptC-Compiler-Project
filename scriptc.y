@@ -10,8 +10,7 @@ void yyerror (char *strError);
 
 int line=1;			// for getting incremented line numbers
 int indexVar=0;		// for incrementing variables
-int stat_inc=0;
-int stat = 0;
+
 /*struct for storing ID or Variable data*/
 typedef struct indentifiers{
 	char var[1000];
@@ -114,13 +113,11 @@ void checkVarDup(char* variable, char* type){
 		}
 	}
 	if(flag==1){
-		printf("\n****ERROR LINE %d: '%s' already declared!****",line,variable);
-		
+		printf("\n****ERROR LINE %d: '%s' already declared!****",line,variable);	
 	}
 	else{
 		saveThisVar(variable,type);
-		printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);
-		
+		printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);	
 	}
 }
 
@@ -146,15 +143,8 @@ void checkVarExist(char* variable, float value){
 	if(flag==1){
 		saveThisVal(variable,value);
 		updateVal(variable,value);
-		stat = 1;
-	} else {
-		stat = 2;
-	}
-	if(stat == 1){
 		printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
-	
-	}
-	else if(stat == 2){
+	} else {
 		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
 	}
 }
