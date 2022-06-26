@@ -79,10 +79,12 @@ void saveThisVal(char* variable, float value){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
-				id[indexVar].ival = toIntValue;				
+				id[indexVar].ival = toIntValue;		
+				break;		
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				id[indexVar].fval = value;	
+				break;
 			}
 		}
 	}
