@@ -125,17 +125,12 @@ void checkVarExist(char* variable, float value){
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
-				flag = 1;			
-				break;			
-			}
-			else if(strcmp(id[i].typ,"float")==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
 				flag = 1;
 				break;			
 			}
 		}
 	}
-
 	if(flag==1){
 		saveThisVal(variable,value);
 		updateVal(variable,value);
@@ -153,13 +148,9 @@ float checkThisVar(char* variable){
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
 				flag = 1;
 				break;			
-			}
-			if(strcmp(id[i].typ,"float")==0){
-				flag = 1;
-				break;
 			}
 		}
 	}

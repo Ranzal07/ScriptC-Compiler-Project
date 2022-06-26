@@ -83,8 +83,8 @@ typedef struct indentifiers{
 	float fval;			// fval stores float type values
 } identifier;
 
-float symbols[1000]; // symbols store values to the identifier
-identifier id[1000]; // id will be the struct variable name and has 1000 indexes to store data
+float symbols[1000];		// symbols store values to the identifier
+identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
 
 void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
  
@@ -100,16 +100,16 @@ float getValue(char* variable){
 	int i;
 	int flag = 0;
 	
-	int bucket = compIdxVar(variable); // recognized variable index will be initialized to the bucket variable
+	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
 				symbols[bucket] = id[i].ival;	
-				return symbols[bucket];	// returns the given variable's recognized int value according to its index
+				return symbols[bucket];		// returns the given variable's recognized int value according to its index
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				symbols[bucket] = id[i].fval;
-				return symbols[bucket];	// returns the current variable's recognized float value according to its index
+				return symbols[bucket];		// returns the current variable's recognized float value according to its index
 			}	
 		}
 	}
@@ -142,7 +142,7 @@ void updateVal(char* variable, float value){
 char* saveThisVar(char* variable, char* type){
 	strcpy(id[indexVar].var,variable);
 	strcpy(id[indexVar].typ,type);
-	indexVar++; // Increments to the next ID index after saving the variable and type
+	indexVar++;		// Increments to the next ID index after saving the variable and type
 }
 
 /* saveThisVal saves any value to the struct identifiers */
@@ -191,17 +191,12 @@ void checkVarExist(char* variable, float value){
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
-				flag = 1;			
-				break;			
-			}
-			else if(strcmp(id[i].typ,"float")==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
 				flag = 1;
 				break;			
 			}
 		}
 	}
-
 	if(flag==1){
 		saveThisVal(variable,value);
 		updateVal(variable,value);
@@ -219,13 +214,9 @@ float checkThisVar(char* variable){
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
 				flag = 1;
 				break;			
-			}
-			if(strcmp(id[i].typ,"float")==0){
-				flag = 1;
-				break;
 			}
 		}
 	}
@@ -279,7 +270,7 @@ int main () {
 
 
 /* Line 371 of yacc.c  */
-#line 283 "scriptc.tab.c"
+#line 274 "scriptc.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -330,11 +321,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 215 "scriptc.y"
+#line 206 "scriptc.y"
 int i; float f; char* s;
 
 /* Line 387 of yacc.c  */
-#line 338 "scriptc.tab.c"
+#line 329 "scriptc.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -362,7 +353,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 366 "scriptc.tab.c"
+#line 357 "scriptc.tab.c"
 
 #ifdef short
 # undef short
@@ -657,11 +648,11 @@ static const yytype_int8 yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint16 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,   226,   226,   227,   231,   232,   233,   234,   238,   239,
-     243,   244,   245,   246,   250,   251,   252,   253,   254,   258,
-     259,   260
+       0,   217,   217,   218,   222,   223,   224,   225,   229,   230,
+     234,   235,   236,   237,   241,   242,   243,   244,   245,   249,
+     250,   251
 };
 #endif
 
@@ -1577,121 +1568,121 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 226 "scriptc.y"
+#line 217 "scriptc.y"
     {line++;}
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 227 "scriptc.y"
+#line 218 "scriptc.y"
     {line++;}
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 231 "scriptc.y"
+#line 222 "scriptc.y"
     {checkVarDup((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].s));}
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 232 "scriptc.y"
+#line 223 "scriptc.y"
     {checkVarExist((yyvsp[(1) - (3)].s),(yyvsp[(3) - (3)].f));}
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 233 "scriptc.y"
+#line 224 "scriptc.y"
     {checkVarDup((yyvsp[(1) - (5)].s),(yyvsp[(3) - (5)].s)); checkVarExist((yyvsp[(1) - (5)].s),(yyvsp[(5) - (5)].f));}
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 238 "scriptc.y"
+#line 229 "scriptc.y"
     {(yyval.s) = (yyvsp[(1) - (1)].s);}
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 239 "scriptc.y"
+#line 230 "scriptc.y"
     {(yyval.s) = (yyvsp[(1) - (1)].s);}
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 243 "scriptc.y"
+#line 234 "scriptc.y"
     {printf("%d",(yyvsp[(4) - (5)].i));}
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 244 "scriptc.y"
+#line 235 "scriptc.y"
     {printf("%f",(yyvsp[(4) - (5)].f));}
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 245 "scriptc.y"
+#line 236 "scriptc.y"
     {oneValPrint((yyvsp[(4) - (7)].s),(yyvsp[(7) - (7)].f));}
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 246 "scriptc.y"
+#line 237 "scriptc.y"
     {twoValPrint((yyvsp[(4) - (10)].s),(yyvsp[(5) - (10)].s),(yyvsp[(8) - (10)].f),(yyvsp[(10) - (10)].f));}
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 250 "scriptc.y"
+#line 241 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (1)].f);}
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 251 "scriptc.y"
+#line 242 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) + (yyvsp[(3) - (3)].f);}
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 252 "scriptc.y"
+#line 243 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) - (yyvsp[(3) - (3)].f);}
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 253 "scriptc.y"
+#line 244 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) * (yyvsp[(3) - (3)].f);}
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 254 "scriptc.y"
+#line 245 "scriptc.y"
     {(yyval.f) = (yyvsp[(1) - (3)].f) / (yyvsp[(3) - (3)].f);}
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 258 "scriptc.y"
+#line 249 "scriptc.y"
     {(yyval.f) = checkThisVar((yyvsp[(1) - (1)].s));}
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 259 "scriptc.y"
+#line 250 "scriptc.y"
     {(yyval.f)=(yyvsp[(1) - (1)].i);}
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 260 "scriptc.y"
+#line 251 "scriptc.y"
     {(yyval.f)=(yyvsp[(1) - (1)].f);}
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1695 "scriptc.tab.c"
+#line 1686 "scriptc.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1923,5 +1914,5 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 263 "scriptc.y"
+#line 254 "scriptc.y"
                     
