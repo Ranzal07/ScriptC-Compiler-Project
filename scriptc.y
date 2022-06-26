@@ -79,7 +79,7 @@ char* saveThisVar(char* variable, char* type){
 	indexVar++; // Increments to the next ID index after saving the variable and type
 }
 
-/* saveThisVar saves any value to the struct identifiers */
+/* saveThisVal saves any value to the struct identifiers */
 void saveThisVal(char* variable, float value){
 	int toIntValue = value;
 	int i;
