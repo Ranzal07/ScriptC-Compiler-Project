@@ -1,6 +1,7 @@
 x:int=1
 y:float=2.2
 z:char='String Characters'
+xi=12
 
 display:"%d",x
 display:"%f",y
