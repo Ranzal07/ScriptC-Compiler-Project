@@ -11,10 +11,13 @@ typedef struct indentifiers{
 	char typ[1000];		// typ stores variable's type
 	int ival;		// ival stores int type values
 	float fval;		// fval stores float type values
+	char cval[1000];		// cval stores char type values
 } identifier;
 
 float symbols[1000];		// symbols store values to the identifier
+char* char_symbols[1000];		// symbols store chartype values to the identifier
 identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
+
 
 
 /* compIdxVar will compute the given variable index and return it*/    
@@ -23,8 +26,9 @@ int compIdxVar(char* variable){
     return idx;
 } 
 
-/* getValue gets the given variable's int or float value and return it to the IDENTIFIER token */
-float getValue(char* variable){	
+
+/* getNumValue gets the given variable's int or float value and return it to the IDENTIFIER token */
+float getNumValue(char* variable){	
 	int i;
 	
 	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
@@ -42,8 +46,25 @@ float getValue(char* variable){
 	}
 }
 
-/* updateVal updates the given variable's value when given another new values */
-void updateVal(char* variable, float value){
+
+/* getCharValue gets the given variable's char type value and return it to the IDENTIFIER token */
+char* getCharValue(char* variable){	
+	int i;
+	
+	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){	
+			if(strcmp(id[i].typ,"char")==0){
+				strcpy(char_symbols[bucket],id[i].cval);
+				return char_symbols[bucket];		// returns the current variable's recognized char type value according to its index
+			}
+		}
+	}
+}
+
+
+/* updateNumVal updates the given variable's int or float type value when given another new values */
+void updateNumVal(char* variable, float value){
 	int i;
 	int toIntValue = (int)value;		// typecasting to int or to convert float value datatype to int
 	int bucket = compIdxVar(variable);
@@ -64,6 +85,25 @@ void updateVal(char* variable, float value){
 	}
 }
 
+
+/* updateCharVal updates the given variable's char type value when given another new values */
+void updateCharVal(char* variable, char* value){
+	int i;
+	
+	int bucket = compIdxVar(variable);
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"char")==0){
+				char_symbols[bucket] = value;
+				strcpy(id[i].cval,char_symbols[bucket]); // new float values will be saved to the struct identifiers (id.cval)
+				break;
+			}
+		}
+	}
+}
+
+
 /* saveThisVar saves the verified given variable and its given type to the struct identifiers */
 void saveThisVar(char* variable, char* type){
 	strcpy(id[indexVar].var,variable);
@@ -71,8 +111,9 @@ void saveThisVar(char* variable, char* type){
 	indexVar++;		// Increments to the next ID index after saving the variable and type
 }
 
-/* saveThisVal saves the value according to variable's datatype to the struct identifiers */
-void saveThisVal(char* variable, float value){
+
+/* saveThisNumVal saves the value (int or float type) to the struct identifiers */
+void saveThisNumVal(char* variable, float value){
 	int i;
 	int toIntValue = (int)value;
 
@@ -90,11 +131,27 @@ void saveThisVal(char* variable, float value){
 	}
 }
 
-/* checkVarDup checks any duplicate or redeclared given variable  */
+
+/* saveThisCharVal saves the value (char type) to the struct identifiers */
+void saveThisCharVal(char* variable, char* value){
+	int i;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"char")==0){
+				strcpy(id[indexVar].cval,value);
+				break;		
+			}
+		}
+	}
+}
+
+
+/* checkVarDup checks if the given variable has duplicates or has been redeclared  */
 void checkVarDup(char* variable, char* type){
 	int i;
 	int flag = 0;
-
+	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){	
 			flag = 1;
@@ -102,7 +159,7 @@ void checkVarDup(char* variable, char* type){
 		}
 	}
 	if(flag==1){
-		printf("\n****ERROR LINE %d: '%s' already declared!****",line,variable);	
+		printf("\n>>>> ERROR LINE %d: '%s' already declared! <<<<",line,variable);	
 	}
 	else{
 		saveThisVar(variable,type);		// otherwise, it will invoke the saveThisVar function to save the variable and its type
@@ -110,8 +167,9 @@ void checkVarDup(char* variable, char* type){
 	}
 }
 
-/* checkVarExist checks if the given variable exists during initialization */
-void checkVarExist(char* variable, float value){
+
+/* checkNumVarExist checks if the given variable (int or float type) exists during initialization */
+void checkNumVarExist(char* variable, float value){
 	int i;
 	int flag = 0;
 	
@@ -124,65 +182,189 @@ void checkVarExist(char* variable, float value){
 		}
 	}
 	if(flag==1){
-		saveThisVal(variable,value);		// if exists, it will invoke the saveThisVar function to save the variable's value
-		updateVal(variable,value);		// then, it will invoke the updateVal function to update the variable's value
+		saveThisNumVal(variable,value);		// if exists, it will invoke the saveThisVar function to save the variable's value
+		updateNumVal(variable,value);		// then, it will invoke the updateNumVal function to update the variable's value
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
-		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
+		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
 	}
 }
 
-/* checkThisVar checks if the given variable initialized to another variable exists*/
-float checkThisVar(char* variable){
+
+/* checkCharVarExist checks if the given variable (char type) exists during initialization */
+void checkCharVarExist(char* variable, char* value){
 	int i;
 	int flag = 0;
-
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
+			if(strcmp(id[i].typ,"char")==0){
 				flag = 1;
 				break;			
 			}
 		}
 	}
 	if(flag==1){
-		return getValue(variable); // if exists, then it will invoke the getValue function
+		saveThisCharVal(variable,value);		// if exists, it will invoke the saveThisVar function to save the variable's value
+		updateCharVal(variable,value);		// then, it will invoke the updateCharVal function to update the variable's value
+		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
-		printf("\n****ERROR LINE %d: '%s' undeclared!****",line,variable);
+		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
 	}
 }
 
-/* oneValPrint prints one given variable's value*/
-void oneValPrint(char* specifier, float value){
+
+/* checkThisNumVar checks if the given variable (int or float type) initialized to another variable exists*/
+/* checkThisNumVar also checks if the given variable (int or float type) exists during printing*/
+float checkThisNumVar(char* variable){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){
+				
+				flag = 1;
+				break;			
+			}
+			else if (strcmp(id[i].typ,"float")==0){
+				flag = 1;
+				break;
+			}
+		}
+	}
+	if(flag==1){
+		return getNumValue(variable); // if exists, then it will invoke the getNumValue function
+	} else {
+		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
+	}
+}
+
+
+/* checkThisCharVar checks if the given variable (char type) initialized to another variable exists*/
+/* checkThisCharVar also checks if the given variable (char type) exists during printing*/
+char* checkThisCharVar(char* variable){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if (strcmp(id[i].typ,"char")==0){
+				flag = 1;
+				break;
+			}
+		}
+	}
+	if(flag==1){
+		return getCharValue(variable); // if exists, then it will invoke the getCharValue function
+	} else {
+		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
+	}
+}
+
+
+/* oneNumValPrint prints one given variable's number value*/
+void oneNumValPrint(char* specifier, float value){
 	int toIntValue = (int)value;
 
 	if(strcmp(specifier,"%d")==0){
-		printf("\nLINE %d Output: %d",line,toIntValue);
+		printf("\nLINE %d Output: %d",line,toIntValue);		// prints integer
 	}
 	else if(strcmp(specifier,"%f")==0){
-		printf("\nLINE %d Output: %g",line,value);
+		printf("\nLINE %d Output: %f",line,value);		// prints float
 	}
 }
 
-/* oneValPrint prints two given variables' values*/
-void twoValPrint(char* specifier, char* specifier2, float value, float value2){
+
+/* tw0NumValPrint prints two given variable's number values*/
+void twoNumValPrint(char* specifier, char* specifier2, float value, float value2){
 	int toIntValue = (int)value;
 	int toIntValue2 = (int)value2;
 
 	if(strcmp(specifier,"%d")==0){
 		if(strcmp(specifier2,"%d")==0){
-			printf("\nLINE %d Output: %d%d",line,toIntValue,toIntValue2);
+			printf("\nLINE %d Output: %d%d",line,toIntValue,toIntValue2);		// prints two integers
 		}
 		else{
-			printf("\nLINE %d Output: %d%g",line,toIntValue,value2);
+			printf("\nLINE %d Output: %d%f",line,toIntValue,value2);		// prints integer then float
 		}
 	}
 	else if(strcmp(specifier,"%f")==0){
 		if(strcmp(specifier2,"%f")==0){
-			printf("\nLINE %d Output: %g%g",line,value,value2);
+			printf("\nLINE %d Output: %f%f",line,value,value2);		// prints two floats
 		}
 		else{
-			printf("\nLINE %d Output: %g%d",line,value,toIntValue2);
+			printf("\nLINE %d Output: %f%d",line,value,toIntValue2);		// prints float, then integer
 		}
+	}
+}
+
+
+/* oneCharValPrint prints one given variable's character value*/
+void oneCharValPrint(char* specifier, char* value){
+	if(strcmp(specifier,"%c")==0){
+		printf("\nLINE %d Output: %c",line,value[0]);	// prints single character
+	}
+	else if(strcmp(specifier,"%s")==0){
+		printf("\nLINE %d Output: %s",line,value);	// prints strings
+	}
+}
+
+
+/* oneCharValPrint prints two given variable's character values*/
+void twoCharValPrint(char* specifier, char* specifier2, char* value, char* value2){
+
+	if(strcmp(specifier,"%c")==0){
+		if(strcmp(specifier2,"%c")==0){
+			printf("\nLINE %d Output: %c%c",line,value,value2);		// prints two single character
+		}
+		else if(strcmp(specifier2,"%s")==0){
+			printf("\nLINE %d Output: %c%s",line,value,value2);		// prints single character, then strings
+		}
+	}
+	else if(strcmp(specifier,"%s")==0){
+		if(strcmp(specifier2,"%c")==0){
+			printf("\nLINE %d Output: %s%c",line,value,value2);		// prints strings, then single character
+		}
+		else if(strcmp(specifier2,"%s")==0){
+			printf("\nLINE %d Output: %s%s",line,value,value2);		// prints two strings
+		}
+	}
+}
+
+
+/* NumCharValPrint prints the number values first, then the character values*/
+void NumCharValPrint(char* specifier, char* specifier2, float value, char* value2){
+	int toIntValue = (int)value;
+
+	if(strcmp(specifier,"%d")==0){
+		if(strcmp(specifier2,"%c")==0)
+			printf("\nLINE %d Output: %d%c",line,toIntValue,value2[0]);	// prints integer, then single character
+		else if(strcmp(specifier2,"%s")==0)
+			printf("\nLINE %d Output: %d%s",line,toIntValue,value2);	// prints integer, then strings
+	}
+	else if(strcmp(specifier,"%f")==0){
+		if(strcmp(specifier2,"%c")==0)
+			printf("\nLINE %d Output: %f%c",line,toIntValue,value2[0]);	// prints float, then single character
+		else if(strcmp(specifier2,"%s")==0)
+			printf("\nLINE %d Output: %f%s",line,toIntValue,value2);	// prints float, then strings
+	}
+}
+
+
+/* CharNumValPrint prints the character values first, then the number values*/
+void CharNumValPrint(char* specifier, char* specifier2, char* value, float value2){
+	int toIntValue2 = (int)value2;
+
+	if(strcmp(specifier,"%c")==0){
+		if(strcmp(specifier2,"%d")==0)
+			printf("\nLINE %d Output: %c%d",line,value[0],toIntValue2);	// prints single character, then integer
+		else if(strcmp(specifier2,"%f")==0)
+			printf("\nLINE %d Output: %s%f",line,value[0],value2);	// prints single character, then float
+	}
+	else if(strcmp(specifier,"%s")==0){
+		if(strcmp(specifier2,"%d")==0)
+			printf("\nLINE %d Output: %s%d",line,value,toIntValue2);	// prints strings, then integer
+		else if(strcmp(specifier2,"%f")==0)
+			printf("\nLINE %d Output: %s%f",line,value,value2);	// prints strings, then float
 	}
 }
