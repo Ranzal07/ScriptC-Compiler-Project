@@ -255,7 +255,6 @@ char* checkThisCharVar(char* variable){
 		}
 	}
 	if(flag==1){
-		
 		return getCharValue(variable); // if exists, then it will invoke the getCharValue function
 	} else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
