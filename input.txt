@@ -1,10 +1,12 @@
 x:int=2
 letter:char='String Characters'
 x=x*2
-y:float=1
-
+t:float=5.5
+y:float=5.2-tuu
+let:char
+let='asbf'
 display:"%d%s",x,letter
 display:"%f",y
 display:"%d",pop
-
+display:"%s",let
 

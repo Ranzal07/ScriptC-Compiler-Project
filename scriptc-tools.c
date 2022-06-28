@@ -96,7 +96,7 @@ void updateCharVal(char* variable, char* value){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"char")==0){
 				char_symbols[bucket] = value;
-				strcpy(id[i].cval,char_symbols[bucket]); // new float values will be saved to the struct identifiers (id.cval)
+				strcpy(id[i].cval,char_symbols[bucket]); // new char values will be saved to the struct identifiers (id.cval)
 				break;
 			}
 		}
