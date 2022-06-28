@@ -4,15 +4,18 @@
 #include <stdlib.h>
 #include "scriptc-tools.c"
 
+#define YYERROR_VERBOSE 1
+
 extern int yylex();
-void yyerror (char *strError);	
+extern void yyerror (const char *s);
+extern yylineno;
 
 %}
 %union {int i; float f; char* s; char* c;}     
 
     /* Yacc definitions */
 
-%token <s> display IDENTIFIER NUM_SPECIFIER NEWLINE INT CHAR FLOAT <i> INTEGERS <f> DECIMALS <c> CHARACTER LET_SPECIFIER
+%token <s> display IDENTIFIER <s> NUM_SPECIFIER NEWLINE INT CHAR FLOAT <i> INTEGERS <f> DECIMALS <c> CHARACTER LET_SPECIFIER
 %type <f> expr term factor values 
 %type <s> type str
 %%
@@ -87,4 +90,8 @@ str			:	IDENTIFIER														{$$ = checkThisCharVar($1);}
 int main (void) {
 	return yyparse();
 }
-void yyerror (char *s) {fprintf (stderr, "%s\n", s);}
+
+void yyerror (const char *s) {
+	fflush(stdout);
+	fprintf(stderr, "\n>>>> ERROR LINE %d: %s <<<<<\n", yylineno, s);
+}

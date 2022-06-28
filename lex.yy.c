@@ -261,9 +261,13 @@ static void yy_flex_free YY_PROTO(( void * ));
 
 #define YY_AT_BOL() (yy_current_buffer->yy_at_bol)
 
+
+#define YY_USES_REJECT
 typedef unsigned char YY_CHAR;
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
 typedef int yy_state_type;
+extern int yylineno;
+int yylineno = 1;
 extern char *yytext;
 #define yytext_ptr yytext
 
@@ -284,12 +288,24 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 
 #define YY_NUM_RULES 15
 #define YY_END_OF_BUFFER 16
-static yyconst short int yy_accept[41] =
+static yyconst short int yy_acclist[63] =
     {   0,
-        0,    0,   16,   14,   12,   11,   13,   14,   14,   13,
-        7,    9,    9,    9,    9,    9,    6,    5,    0,   10,
-        7,    0,    9,    9,    9,    9,    9,    8,    9,    9,
-        9,    2,    4,    9,    9,    9,    3,    9,    1,    0
+       16,   14,   15,   12,   14,   15,   11,   12,   15,   13,
+       14,   15,   14,   15,   14,   15,   13,   14,   15,    7,
+       14,   15,    9,   14,   15,    9,   14,   15,    9,   14,
+       15,    9,   14,   15,    9,   14,   15,    6,    5,   10,
+        7,    9,    9,    9,    9,    9,    8,    9,    9,    9,
+        2,    9,    4,    9,    9,    9,    9,    3,    9,    9,
+        1,    9
+    } ;
+
+static yyconst short int yy_accept[42] =
+    {   0,
+        1,    1,    1,    2,    4,    7,   10,   13,   15,   17,
+       20,   23,   26,   29,   32,   35,   38,   39,   40,   40,
+       41,   42,   42,   43,   44,   45,   46,   47,   48,   49,
+       50,   51,   53,   55,   56,   57,   58,   60,   61,   63,
+       63
     } ;
 
 static yyconst int yy_ec[256] =
@@ -375,13 +391,16 @@ static yyconst short int yy_chk[83] =
        40,   40
     } ;
 
-static yy_state_type yy_last_accepting_state;
-static char *yy_last_accepting_cpos;
-
-/* The intent behind this definition is that it'll catch
- * any uses of REJECT which flex missed.
- */
-#define REJECT reject_used_but_not_detected
+static yy_state_type yy_state_buf[YY_BUF_SIZE + 2], *yy_state_ptr;
+static char *yy_full_match;
+static int yy_lp;
+#define REJECT \
+{ \
+*yy_cp = yy_hold_char; /* undo effects of setting up yytext */ \
+yy_cp = yy_full_match; /* restore poss. backed-over text */ \
+++yy_lp; \
+goto find_rule; \
+}
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
@@ -393,11 +412,10 @@ char *yytext;
 #include <stdlib.h>
 #include <string.h>
 #include "scriptc-yacc.tab.h"
-int iTemp;
-char strTemp[200];
 
 
-#line 401 "lex.yy.c"
+
+#line 419 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -548,9 +566,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 12 "scriptc-lex.l"
+#line 13 "scriptc-lex.l"
 
-#line 554 "lex.yy.c"
+#line 572 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -589,15 +607,12 @@ YY_DECL
 		yy_bp = yy_cp;
 
 		yy_current_state = yy_start;
+		yy_state_ptr = yy_state_buf;
+		*yy_state_ptr++ = yy_current_state;
 yy_match:
 		do
 			{
 			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
-			if ( yy_accept[yy_current_state] )
-				{
-				yy_last_accepting_state = yy_current_state;
-				yy_last_accepting_cpos = yy_cp;
-				}
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
@@ -605,82 +620,93 @@ yy_match:
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+			*yy_state_ptr++ = yy_current_state;
 			++yy_cp;
 			}
 		while ( yy_base[yy_current_state] != 58 );
 
 yy_find_action:
-		yy_act = yy_accept[yy_current_state];
-		if ( yy_act == 0 )
-			{ /* have to back up */
-			yy_cp = yy_last_accepting_cpos;
-			yy_current_state = yy_last_accepting_state;
-			yy_act = yy_accept[yy_current_state];
+		yy_current_state = *--yy_state_ptr;
+		yy_lp = yy_accept[yy_current_state];
+find_rule: /* we branch to this label when backing up */
+		for ( ; ; ) /* until we find what rule we matched */
+			{
+			if ( yy_lp && yy_lp < yy_accept[yy_current_state + 1] )
+				{
+				yy_act = yy_acclist[yy_lp];
+					{
+					yy_full_match = yy_cp;
+					break;
+					}
+				}
+			--yy_cp;
+			yy_current_state = *--yy_state_ptr;
+			yy_lp = yy_accept[yy_current_state];
 			}
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER )
+			{
+			int yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					++yylineno;
+			}
 
 do_action:	/* This label is used only to access EOF actions. */
 
 
 		switch ( yy_act )
 	{ /* beginning of action switch */
-			case 0: /* must back up */
-			/* undo the effects of YY_DO_BEFORE_ACTION */
-			*yy_cp = yy_hold_char;
-			yy_cp = yy_last_accepting_cpos;
-			yy_current_state = yy_last_accepting_state;
-			goto yy_find_action;
-
 case 1:
 YY_RULE_SETUP
-#line 13 "scriptc-lex.l"
+#line 14 "scriptc-lex.l"
 {return display;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "scriptc-lex.l"
+#line 16 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return INT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 16 "scriptc-lex.l"
+#line 17 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return FLOAT;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 17 "scriptc-lex.l"
+#line 18 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return CHAR;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "scriptc-lex.l"
+#line 19 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return NUM_SPECIFIER;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 19 "scriptc-lex.l"
+#line 20 "scriptc-lex.l"
 {yylval.c = strdup(yytext); return LET_SPECIFIER;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "scriptc-lex.l"
-{sscanf(yytext, "%d", &iTemp); yylval.i = iTemp; return INTEGERS;}
+#line 22 "scriptc-lex.l"
+{yylval.i = atof(yytext); return INTEGERS;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "scriptc-lex.l"
+#line 23 "scriptc-lex.l"
 {yylval.f = atof(yytext); return DECIMALS;}       
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "scriptc-lex.l"
+#line 24 "scriptc-lex.l"
 {yylval.s = strdup(yytext); return IDENTIFIER;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 25 "scriptc-lex.l"
+#line 26 "scriptc-lex.l"
 {
                                           yylval.c = strdup(yytext+1);
                                           if (yylval.c[yyleng-2] != '\'')
@@ -692,32 +718,32 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 35 "scriptc-lex.l"
+#line 36 "scriptc-lex.l"
 {return NEWLINE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 38 "scriptc-lex.l"
+#line 39 "scriptc-lex.l"
 ;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 39 "scriptc-lex.l"
+#line 40 "scriptc-lex.l"
 {return yytext[0];}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 40 "scriptc-lex.l"
+#line 41 "scriptc-lex.l"
 {ECHO; yyerror ("unexpected character");}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 42 "scriptc-lex.l"
+#line 43 "scriptc-lex.l"
 ECHO;
 	YY_BREAK
-#line 719 "lex.yy.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 745 "lex.yy.c"
+			case YY_STATE_EOF(INITIAL):
+				yyterminate();
 
 	case YY_END_OF_BUFFER:
 		{
@@ -995,15 +1021,12 @@ static yy_state_type yy_get_previous_state()
 	register char *yy_cp;
 
 	yy_current_state = yy_start;
+	yy_state_ptr = yy_state_buf;
+	*yy_state_ptr++ = yy_current_state;
 
 	for ( yy_cp = yytext_ptr + YY_MORE_ADJ; yy_cp < yy_c_buf_p; ++yy_cp )
 		{
 		register YY_CHAR yy_c = (*yy_cp ? yy_ec[YY_SC_TO_UI(*yy_cp)] : 1);
-		if ( yy_accept[yy_current_state] )
-			{
-			yy_last_accepting_state = yy_current_state;
-			yy_last_accepting_cpos = yy_cp;
-			}
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
@@ -1011,6 +1034,7 @@ static yy_state_type yy_get_previous_state()
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+		*yy_state_ptr++ = yy_current_state;
 		}
 
 	return yy_current_state;
@@ -1031,14 +1055,8 @@ yy_state_type yy_current_state;
 #endif
 	{
 	register int yy_is_jam;
-	register char *yy_cp = yy_c_buf_p;
 
 	register YY_CHAR yy_c = 1;
-	if ( yy_accept[yy_current_state] )
-		{
-		yy_last_accepting_state = yy_current_state;
-		yy_last_accepting_cpos = yy_cp;
-		}
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
@@ -1047,6 +1065,8 @@ yy_state_type yy_current_state;
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 40);
+	if ( ! yy_is_jam )
+		*yy_state_ptr++ = yy_current_state;
 
 	return yy_is_jam ? 0 : yy_current_state;
 	}
@@ -1089,6 +1109,8 @@ register char *yy_bp;
 
 	*--yy_cp = (char) c;
 
+	if ( c == '\n' )
+		--yylineno;
 
 	yytext_ptr = yy_bp;
 	yy_hold_char = *yy_cp;
@@ -1165,6 +1187,8 @@ static int input()
 	*yy_c_buf_p = '\0';	/* preserve yytext */
 	yy_hold_char = *++yy_c_buf_p;
 
+	if ( c == '\n' )
+		++yylineno;
 
 	return c;
 	}
@@ -1601,6 +1625,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 42 "scriptc-lex.l"
+#line 43 "scriptc-lex.l"
 
 int yywrap (void) {return 1;}

@@ -160,6 +160,7 @@ void checkVarDup(char* variable, char* type){
 	}
 	if(flag==1){
 		printf("\n>>>> ERROR LINE %d: '%s' already declared! <<<<",line,variable);	
+		exit(1);		// terminates the program
 	}
 	else{
 		saveThisVar(variable,type);		// otherwise, it will invoke the saveThisVar function to save the variable and its type
@@ -187,6 +188,7 @@ void checkNumVarExist(char* variable, float value){
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
+		exit(1);
 	}
 }
 
@@ -209,6 +211,7 @@ void checkCharVarExist(char* variable, char* value){
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
+		exit(1);
 	}
 }
 
@@ -236,6 +239,7 @@ float checkThisNumVar(char* variable){
 		return getNumValue(variable); // if exists, then it will invoke the getNumValue function
 	} else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
+		exit(1);
 	}
 }
 
@@ -258,6 +262,7 @@ char* checkThisCharVar(char* variable){
 		return getCharValue(variable); // if exists, then it will invoke the getCharValue function
 	} else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
+		exit(1);
 	}
 }
 
@@ -315,15 +320,15 @@ void twoCharValPrint(char* specifier, char* specifier2, char* value, char* value
 
 	if(strcmp(specifier,"%c")==0){
 		if(strcmp(specifier2,"%c")==0){
-			printf("\nLINE %d Output: %c%c",line,value,value2);		// prints two single character
+			printf("\nLINE %d Output: %c%c",line,value[0],value2[0]);		// prints two single character
 		}
 		else if(strcmp(specifier2,"%s")==0){
-			printf("\nLINE %d Output: %c%s",line,value,value2);		// prints single character, then strings
+			printf("\nLINE %d Output: %c%s",line,value[0],value2);		// prints single character, then strings
 		}
 	}
 	else if(strcmp(specifier,"%s")==0){
 		if(strcmp(specifier2,"%c")==0){
-			printf("\nLINE %d Output: %s%c",line,value,value2);		// prints strings, then single character
+			printf("\nLINE %d Output: %s%c",line,value,value2[0]);		// prints strings, then single character
 		}
 		else if(strcmp(specifier2,"%s")==0){
 			printf("\nLINE %d Output: %s%s",line,value,value2);		// prints two strings
@@ -344,9 +349,9 @@ void NumCharValPrint(char* specifier, char* specifier2, float value, char* value
 	}
 	else if(strcmp(specifier,"%f")==0){
 		if(strcmp(specifier2,"%c")==0)
-			printf("\nLINE %d Output: %f%c",line,toIntValue,value2[0]);	// prints float, then single character
+			printf("\nLINE %d Output: %f%c",line,value,value2[0]);	// prints float, then single character
 		else if(strcmp(specifier2,"%s")==0)
-			printf("\nLINE %d Output: %f%s",line,toIntValue,value2);	// prints float, then strings
+			printf("\nLINE %d Output: %f%s",line,value,value2);	// prints float, then strings
 	}
 }
 
@@ -359,7 +364,7 @@ void CharNumValPrint(char* specifier, char* specifier2, char* value, float value
 		if(strcmp(specifier2,"%d")==0)
 			printf("\nLINE %d Output: %c%d",line,value[0],toIntValue2);	// prints single character, then integer
 		else if(strcmp(specifier2,"%f")==0)
-			printf("\nLINE %d Output: %s%f",line,value[0],value2);	// prints single character, then float
+			printf("\nLINE %d Output: %s%f",line,value,value2);	// prints single character, then float
 	}
 	else if(strcmp(specifier,"%s")==0){
 		if(strcmp(specifier2,"%d")==0)
@@ -368,3 +373,4 @@ void CharNumValPrint(char* specifier, char* specifier2, char* value, float value
 			printf("\nLINE %d Output: %s%f",line,value,value2);	// prints strings, then float
 	}
 }
+

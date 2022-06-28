@@ -1,13 +1,32 @@
-x:int=2
-letter:char='String Characters'
-x=x*2
-t:float=5.5
-y:float=5.2-tuu
-y:int
-let:char
-let='asbf'
-display:"%d%s",x,letter
+x:int=1
+y:float=2.2
+z:char='String Characters'
+
+display:"%d",x
 display:"%f",y
-display:"%d",pop
-display:"%s",let
+display:"%c",z
+display:"%s",z
+
+display:"%d%d",x,x
+display:"%f%f",y,y
+display:"%c%c",z,z
+display:"%s%s",z,z
+
+display:"%d%f",x,y
+display:"%f%d",y,x
+display:"%c%s",z,z
+display:"%s%c",z,z
+
+display:"%d%c",x,z
+display:"%d%s",x,z
+display:"%f%c",y,z
+display:"%f%s",y,z
+
+display:"%c%d",z,x
+display:"%c%f",z,y
+display:"%s%d",z,x
+display:"%s%f",z,y
+
+
+
 

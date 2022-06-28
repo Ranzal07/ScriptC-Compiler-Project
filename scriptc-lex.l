@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "scriptc-yacc.tab.h"
-int iTemp;
-char strTemp[200];
+
 
 
 %}
+
+%option yylineno
 
 %%
 "display"                           {return display;}
@@ -18,7 +19,7 @@ char strTemp[200];
 %d|%f                               {yylval.s = strdup(yytext); return NUM_SPECIFIER;}
 %c|%s                               {yylval.c = strdup(yytext); return LET_SPECIFIER;}
                              
-[-]?[0-9]+                          {sscanf(yytext, "%d", &iTemp); yylval.i = iTemp; return INTEGERS;}
+[-]?[0-9]+                          {yylval.i = atof(yytext); return INTEGERS;}
 [-]?[0-9]+\.[0-9]+                  {yylval.f = atof(yytext); return DECIMALS;}       
 [a-zA-Z_]+                          {yylval.s = strdup(yytext); return IDENTIFIER;}
 
