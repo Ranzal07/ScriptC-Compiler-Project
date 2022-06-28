@@ -12,7 +12,7 @@ void yyerror (char *strError);
 
     /* Yacc definitions */
 
-%token <s> display IDENTIFIER <s> NUM_SPECIFIER NEWLINE INT CHAR FLOAT <i> INTEGERS <f> DECIMALS <c> CHARACTER LET_SPECIFIER
+%token <s> display IDENTIFIER NUM_SPECIFIER NEWLINE INT CHAR FLOAT <i> INTEGERS <f> DECIMALS <c> CHARACTER LET_SPECIFIER
 %type <f> expr term factor values 
 %type <s> type str
 %%

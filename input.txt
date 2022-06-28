@@ -3,6 +3,7 @@ letter:char='String Characters'
 x=x*2
 t:float=5.5
 y:float=5.2-tuu
+y:int
 let:char
 let='asbf'
 display:"%d%s",x,letter

@@ -147,7 +147,7 @@ void saveThisCharVal(char* variable, char* value){
 }
 
 
-/* checkVarDup checks if the given variable has duplicates or has been redeclared  */
+/* checkVarDup checks if the given variable has duplicates or has been redeclared */
 void checkVarDup(char* variable, char* type){
 	int i;
 	int flag = 0;
@@ -310,7 +310,7 @@ void oneCharValPrint(char* specifier, char* value){
 }
 
 
-/* oneCharValPrint prints two given variable's character values*/
+/* twoCharValPrint prints two given variable's character values*/
 void twoCharValPrint(char* specifier, char* specifier2, char* value, char* value2){
 
 	if(strcmp(specifier,"%c")==0){
