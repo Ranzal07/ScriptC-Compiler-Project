@@ -364,7 +364,7 @@ void CharNumValPrint(char* specifier, char* specifier2, char* value, float value
 		if(strcmp(specifier2,"%d")==0)
 			printf("\nLINE %d Output: %c%d",line,value[0],toIntValue2);	// prints single character, then integer
 		else if(strcmp(specifier2,"%f")==0)
-			printf("\nLINE %d Output: %s%f",line,value,value2);	// prints single character, then float
+			printf("\nLINE %d Output: %c%f",line,value[0],value2);	// prints single character, then float
 	}
 	else if(strcmp(specifier,"%s")==0){
 		if(strcmp(specifier2,"%d")==0)

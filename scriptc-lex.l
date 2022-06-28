@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "scriptc-yacc.tab.h"
-
-
-
 %}
 
 %option yylineno
@@ -31,7 +28,6 @@
                                               yylval.c[yyleng-2] = 0;
                                           return CHARACTER;
                                     }
-
 
 \n                                  {return NEWLINE;}
 
