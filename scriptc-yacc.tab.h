@@ -48,12 +48,15 @@ extern int yydebug;
    enum yytokentype {
      display = 258,
      IDENTIFIER = 259,
-     SPECIFIER = 260,
+     NUM_SPECIFIER = 260,
      NEWLINE = 261,
      INT = 262,
-     FLOAT = 263,
-     INTEGERS = 264,
-     DECIMALS = 265
+     CHAR = 263,
+     FLOAT = 264,
+     INTEGERS = 265,
+     DECIMALS = 266,
+     CHARACTER = 267,
+     LET_SPECIFIER = 268
    };
 #endif
 
@@ -63,10 +66,10 @@ typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
 #line 11 "scriptc-yacc.y"
-int i; float f; char* s;
+int i; float f; char* s; char* c;
 
 /* Line 2058 of yacc.c  */
-#line 70 "scriptc-yacc.tab.h"
+#line 73 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

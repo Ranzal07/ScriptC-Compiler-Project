@@ -1,23 +1,10 @@
-n : int
-nu : int
-nu = -10
-n = 5
-nina = 43
-num : int = 1+2*19
-display : "%d",n
-numyad : float
-numy : float = 16.3+5
-numyad = -30.3 + numy
-numya : float
-numya = -25.4
-n = 13
-n : float
+x:int=2
+letter:char='String Characters'
+x=x*2
+y:float=1
 
-display : "%d" , n
-display : "%d" , nu
-display : "%d" , num
-display : "%f" , numy
-display : "%f" , numya
-display : "%f" , numyad
+display:"%d%s",x,letter
+display:"%f",y
+display:"%d",pop
 
 
