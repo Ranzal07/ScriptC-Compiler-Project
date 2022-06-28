@@ -19,7 +19,7 @@
 [-]?[0-9]+                          {yylval.i = atof(yytext); return INTEGERS;}
 [-]?[0-9]+\.[0-9]+                  {yylval.f = atof(yytext); return DECIMALS;}       
 [a-zA-Z_]+                          {yylval.s = strdup(yytext); return IDENTIFIER;}
-
+'='                                 {return EQUALS;}
 \'.*\'                              {
                                           yylval.c = strdup(yytext+1);
                                           if (yylval.c[yyleng-2] != '\'')

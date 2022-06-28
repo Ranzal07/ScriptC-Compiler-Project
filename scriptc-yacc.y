@@ -14,7 +14,7 @@ extern yylineno;
 %union {int i; float f; char* s; char* c;}     
 
     /* Yacc definitions */
-
+%token EQUALS
 %token <s> display IDENTIFIER <s> NUM_SPECIFIER NEWLINE INT CHAR FLOAT <i> INTEGERS <f> DECIMALS <c> CHARACTER LET_SPECIFIER
 %type <f> expr term factor values 
 %type <s> type str
@@ -40,7 +40,7 @@ numVar_statements	:	IDENTIFIER ':' type										{checkVarDup($1,$3);}
 					|	IDENTIFIER ':' type '=' expr							{checkVarDup($1,$3); saveThisNumVal($1,$5); updateNumVal($1,$5);}
 					;
 letVar_statements	:	IDENTIFIER ':' CHAR										{checkVarDup($1,$3);}
-					|	IDENTIFIER '=' str										{checkCharVarExist($1,$3);}
+					|	IDENTIFIER EQUALS str										{checkCharVarExist($1,$3);}
 					|	IDENTIFIER ':' CHAR '=' str								{checkVarDup($1,$3); saveThisCharVal($1,$5); updateCharVal($1,$5);}
 					;
 
