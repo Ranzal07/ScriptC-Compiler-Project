@@ -39,8 +39,9 @@ numVar_statements	:	IDENTIFIER ':' type										{checkVarDup($1,$3);}
 					|	IDENTIFIER '=' expr										{checkNumVarExist($1,$3);}
 					|	IDENTIFIER ':' type '=' expr							{checkVarDup($1,$3); saveThisNumVal($1,$5); updateNumVal($1,$5);}
 					;
+
 letVar_statements	:	IDENTIFIER ':' CHAR										{checkVarDup($1,$3);}
-					|	IDENTIFIER EQUALS str										{checkCharVarExist($1,$3);}
+					|	IDENTIFIER EQUALS str									{checkCharVarExist($1,$3);}
 					|	IDENTIFIER ':' CHAR '=' str								{checkVarDup($1,$3); saveThisCharVal($1,$5); updateCharVal($1,$5);}
 					;
 
@@ -75,12 +76,13 @@ factor		:	values															{$$ = $1;}
 			|	'(' expr ')'													{$$ = $2;}		
 			;
 
-/* term can be either int or float or variable holding the value */
+/* values can be either int or float or variable holding the value */
 values		:	IDENTIFIER														{$$ = checkThisNumVar($1);}
 			|	INTEGERS														{$$ = $1;}
 			|	DECIMALS														{$$ = $1;}
 			;
 
+/* str can be either character or variable holding the value */
 str			:	IDENTIFIER														{$$ = checkThisCharVar($1);}
 			|	CHARACTER														{$$ = $1;}
 			;
