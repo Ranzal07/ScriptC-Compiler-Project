@@ -4,7 +4,7 @@ jeng:float=2333.2
 vag:int=11
 zhu:char='String Characteristic'
 Jye:char='Alibaba Badibadi'
-vlu:int=vlu
+vlu:int=44
 moz:char
 upho:float=xin+1.4
 
