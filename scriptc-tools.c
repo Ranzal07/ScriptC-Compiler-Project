@@ -217,15 +217,15 @@ void checkCharVarExist(char* variable, char* value){
 
 
 /* checkThisNumVar checks if the given variable (int or float type) initialized to another variable exists */
-/* checkThisNumVar also checks if the given variable (int or float type) exists during printing */
+/* checkThisNumVar also checks if the given variable (int or float type) exists during printing and type matching */
 float checkThisNumVar(char* variable){
-	int i;
+	int i,getIndex;
 	int flag = 0;
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0){
-				
+			getIndex = i;
+			if(strcmp(id[i].typ,"int")==0){		
 				flag = 1;
 				break;			
 			}
@@ -233,10 +233,20 @@ float checkThisNumVar(char* variable){
 				flag = 1;
 				break;
 			}
+			else if (strcmp(id[i].typ,"char")==0){
+				flag = 2;
+				break;
+			}
 		}
 	}
 	if(flag==1){
 		return getNumValue(variable); // if exists, then it will invoke the getNumValue function
+	} 
+	else if(flag==2){		// if the given variable initialized to another variable has type mismatched
+		if(strcmp(id[getIndex].typ,"char")==0){
+			printf("\n>>>> ERROR LINE %d: '%s' is neither 'int' nor 'float' type! <<<<",line,variable);
+			exit(1);
+		}
 	} else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
 		exit(1);
@@ -245,22 +255,34 @@ float checkThisNumVar(char* variable){
 
 
 /* checkThisCharVar checks if the given variable (char type) initialized to another variable exists */
-/* checkThisCharVar also checks if the given variable (char type) exists during printing */
+/* checkThisCharVar also checks if the given variable (char type) exists during printing and type matching */
 char* checkThisCharVar(char* variable){
-	int i;
+	int i,getIndex;
 	int flag = 0;
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
+			getIndex = i;
 			if (strcmp(id[i].typ,"char")==0){
 				flag = 1;
+				break;
+			}
+			else{			
+				flag = 2;
 				break;
 			}
 		}
 	}
 	if(flag==1){
 		return getCharValue(variable); // if exists, then it will invoke the getCharValue function
-	} else {
+	} 
+	else if(flag==2){		// if the given variable initialized to another variable has type mismatched
+		if(strcmp(id[getIndex].typ,"int")==0 || strcmp(id[getIndex].typ,"float")==0){
+			printf("\n>>>> ERROR LINE %d: '%s' is not a 'char' type! <<<<",line,variable);
+			exit(1);
+		}
+	}
+	else {
 		printf("\n>>>> ERROR LINE %d: '%s' undeclared! <<<<",line,variable);
 		exit(1);
 	}
