@@ -46,18 +46,19 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     EQUALS = 258,
-     display = 259,
-     IDENTIFIER = 260,
-     NUM_SPECIFIER = 261,
-     NEWLINE = 262,
-     INT = 263,
-     CHAR = 264,
-     FLOAT = 265,
-     INTEGERS = 266,
-     DECIMALS = 267,
-     CHARACTER = 268,
-     LET_SPECIFIER = 269
+     negative = 258,
+     EQUALS = 259,
+     display = 260,
+     IDENTIFIER = 261,
+     NUM_SPECIFIER = 262,
+     NEWLINE = 263,
+     INT = 264,
+     CHAR = 265,
+     FLOAT = 266,
+     INTEGERS = 267,
+     DECIMALS = 268,
+     CHARACTER = 269,
+     LET_SPECIFIER = 270
    };
 #endif
 
@@ -70,7 +71,7 @@ typedef union YYSTYPE
 int i; float f; char* s; char* c;
 
 /* Line 2058 of yacc.c  */
-#line 74 "scriptc-yacc.tab.h"
+#line 75 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

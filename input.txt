@@ -1,31 +1,12 @@
-x:int=1
-y:float=2.2
+x:int=1233
+x=x+135
+y:float=2333.2
 z:char='String Characters'
 
-display:"%d",x
-display:"%f",y
+display:"%d",10/2+5*(2-5)
+display:"%f",(10.6)*-2
 display:"%c",z
-display:"%s",z
-
-display:"%d%d",x,x
-display:"%f%f",y,y
-display:"%c%c",z,z
-display:"%s%s",z,z
-
-display:"%d%f",x,y
-display:"%f%d",y,x
-display:"%c%s",z,z
-display:"%s%c",z,z
-
-display:"%d%c",x,z
-display:"%d%s",x,z
-display:"%f%c",y,z
-display:"%f%s",y,z
-
-display:"%c%d",z,x
-display:"%c%f",z,y
 display:"%s%d",z,x
-display:"%s%f",z,y
 
 
 
