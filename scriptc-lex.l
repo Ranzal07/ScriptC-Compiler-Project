@@ -10,24 +10,24 @@
 %%
 "display"                           {return display;}
 
-"int"                               {yylval.s = strdup(yytext); return INT;}
-"float"                             {yylval.s = strdup(yytext); return FLOAT;}
-"char"                              {yylval.s = strdup(yytext); return CHAR;}
-%d|%f                               {yylval.s = strdup(yytext); return NUM_SPECIFIER;}
-%c|%s                               {yylval.c = strdup(yytext); return LET_SPECIFIER;}
+"int"                               {yylval.all.c = strdup(yytext); return INT;}
+"float"                             {yylval.all.c = strdup(yytext); return FLOAT;}
+"char"                              {yylval.all.c = strdup(yytext); return CHAR;}
+%d|%f                               {yylval.all.c = strdup(yytext); return NUM_SPECIFIER;}
+%c|%s                               {yylval.all.c = strdup(yytext); return LET_SPECIFIER;}
                              
-[0-9]+                              {yylval.i = atof(yytext); return INTEGERS;}
-[0-9]+\.[0-9]+                      {yylval.f = atof(yytext); return DECIMALS;}       
-[a-zA-Z_]+                          {yylval.s = strdup(yytext); return IDENTIFIER;}
+[0-9]+                              {yylval.all.i = atof(yytext); return INTEGERS;}
+[0-9]+\.[0-9]+                      {yylval.all.f = atof(yytext); return DECIMALS;}       
+[a-zA-Z_]+                          {yylval.all.c = strdup(yytext); return IDENTIFIER;}
 \'.*\'                              {
-                                          yylval.c = strdup(yytext+1);
-                                          if (yylval.c[yyleng-2] != '\'')
+                                          yylval.all.c = strdup(yytext+1);
+                                          if (yylval.all.c[yyleng-2] != '\'')
                                               yyerror("improperly terminated string");
                                           else
-                                              yylval.c[yyleng-2] = 0;
+                                              yylval.all.c[yyleng-2] = 0;
                                           return CHARACTER;
                                     }
-'='                                 {return EQUALS;}
+
 \n                                  {return NEWLINE;}
 
 [ \t\n]                             ;
