@@ -5,7 +5,7 @@
 int line = 1;		// for getting incremented line number indexes
 int indexVar = 0;		// for incrementing variable indexes
 
-/*struct for storing ID or Variable data*/
+/* struct for storing ID or Variable data */
 typedef struct indentifiers{
 	char var[1000];		// var stores variable names
 	char typ[1000];		// typ stores variable's type
@@ -20,7 +20,7 @@ identifier id[1000];		// id will be the struct variable name and has 1000 indexe
 
 
 
-/* compIdxVar will compute the given variable index and return it*/    
+/* compIdxVar will compute the given variable index and return it */    
 int compIdxVar(char* variable){
     int idx = *variable;
     return idx;
@@ -216,8 +216,8 @@ void checkCharVarExist(char* variable, char* value){
 }
 
 
-/* checkThisNumVar checks if the given variable (int or float type) initialized to another variable exists*/
-/* checkThisNumVar also checks if the given variable (int or float type) exists during printing*/
+/* checkThisNumVar checks if the given variable (int or float type) initialized to another variable exists */
+/* checkThisNumVar also checks if the given variable (int or float type) exists during printing */
 float checkThisNumVar(char* variable){
 	int i;
 	int flag = 0;
@@ -244,8 +244,8 @@ float checkThisNumVar(char* variable){
 }
 
 
-/* checkThisCharVar checks if the given variable (char type) initialized to another variable exists*/
-/* checkThisCharVar also checks if the given variable (char type) exists during printing*/
+/* checkThisCharVar checks if the given variable (char type) initialized to another variable exists */
+/* checkThisCharVar also checks if the given variable (char type) exists during printing */
 char* checkThisCharVar(char* variable){
 	int i;
 	int flag = 0;
@@ -267,7 +267,7 @@ char* checkThisCharVar(char* variable){
 }
 
 
-/* oneNumValPrint prints one given variable's number value*/
+/* oneNumValPrint prints one given variable's number value */
 void oneNumValPrint(char* specifier, float value){
 	int toIntValue = (int)value;
 
@@ -280,7 +280,7 @@ void oneNumValPrint(char* specifier, float value){
 }
 
 
-/* tw0NumValPrint prints two given variable's number values*/
+/* tw0NumValPrint prints two given variable's number values */
 void twoNumValPrint(char* specifier, char* specifier2, float value, float value2){
 	int toIntValue = (int)value;
 	int toIntValue2 = (int)value2;
@@ -304,7 +304,7 @@ void twoNumValPrint(char* specifier, char* specifier2, float value, float value2
 }
 
 
-/* oneCharValPrint prints one given variable's character value*/
+/* oneCharValPrint prints one given variable's character value */
 void oneCharValPrint(char* specifier, char* value){
 	if(strcmp(specifier,"%c")==0){
 		printf("\nLINE %d Output: %c",line,value[0]);	// prints single character
@@ -315,7 +315,7 @@ void oneCharValPrint(char* specifier, char* value){
 }
 
 
-/* twoCharValPrint prints two given variable's character values*/
+/* twoCharValPrint prints two given variable's character values */
 void twoCharValPrint(char* specifier, char* specifier2, char* value, char* value2){
 
 	if(strcmp(specifier,"%c")==0){
@@ -337,7 +337,7 @@ void twoCharValPrint(char* specifier, char* specifier2, char* value, char* value
 }
 
 
-/* NumCharValPrint prints the number values first, then the character values*/
+/* NumCharValPrint prints the number values first, then the character values */
 void NumCharValPrint(char* specifier, char* specifier2, float value, char* value2){
 	int toIntValue = (int)value;
 
@@ -356,7 +356,7 @@ void NumCharValPrint(char* specifier, char* specifier2, float value, char* value
 }
 
 
-/* CharNumValPrint prints the character values first, then the number values*/
+/* CharNumValPrint prints the character values first, then the number values */
 void CharNumValPrint(char* specifier, char* specifier2, char* value, float value2){
 	int toIntValue2 = (int)value2;
 

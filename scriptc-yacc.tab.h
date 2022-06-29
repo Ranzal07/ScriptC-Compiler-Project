@@ -47,18 +47,18 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      UMINUS = 258,
-     EQUALS = 259,
-     display = 260,
-     IDENTIFIER = 261,
-     NUM_SPECIFIER = 262,
-     NEWLINE = 263,
-     INT = 264,
-     CHAR = 265,
-     FLOAT = 266,
-     INTEGERS = 267,
-     DECIMALS = 268,
-     CHARACTER = 269,
-     LET_SPECIFIER = 270
+     display = 259,
+     NEWLINE = 260,
+     EQUALS = 261,
+     INTEGERS = 262,
+     DECIMALS = 263,
+     CHARACTER = 264,
+     IDENTIFIER = 265,
+     NUM_SPECIFIER = 266,
+     LET_SPECIFIER = 267,
+     INT = 268,
+     FLOAT = 269,
+     CHAR = 270
    };
 #endif
 
@@ -68,7 +68,7 @@ typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
 #line 14 "scriptc-yacc.y"
-int i; float f; char* s; char* c;
+int i; float f; char* c; char* s;
 
 /* Line 2058 of yacc.c  */
 #line 75 "scriptc-yacc.tab.h"

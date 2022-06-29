@@ -11,7 +11,7 @@ extern void yyerror (const char *s);
 extern yylineno;
 
 %}
-%union {int i; float f; char* s; char* c;}    
+%union {int i; float f; char* c; char* s;}    
 
 %left '+' '-'
 %left '*' '/'
@@ -19,10 +19,11 @@ extern yylineno;
 %left UMINUS
 
     /* Yacc definitions */
-%token EQUALS
-%token <s> display IDENTIFIER <s> NUM_SPECIFIER NEWLINE INT CHAR FLOAT <i> INTEGERS <f> DECIMALS <c> CHARACTER LET_SPECIFIER
+%token display NEWLINE EQUALS
+%token <i> INTEGERS <f> DECIMALS <c> CHARACTER <s> IDENTIFIER NUM_SPECIFIER LET_SPECIFIER INT FLOAT CHAR 
 %type <f> expr term factor values 
-%type <s> type str
+%type <c> str
+%type <s> type
 %%
 
 /* descriptions of expected inputs corresponding actions (in C) */
