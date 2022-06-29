@@ -242,7 +242,7 @@ float checkThisNumVar(char* variable){
 	if(flag==1){
 		return getNumValue(variable); // if exists, then it will invoke the getNumValue function
 	} 
-	else if(flag==2){		// if the given variable initialized to another variable has type mismatched
+	else if(flag==2){		// causes error if the given variable is type mismatched for an int or float type
 		if(strcmp(id[getIndex].typ,"char")==0){
 			printf("\n>>>> ERROR LINE %d: '%s' is neither 'int' nor 'float' type! <<<<",line,variable);
 			exit(1);
@@ -276,7 +276,7 @@ char* checkThisCharVar(char* variable){
 	if(flag==1){
 		return getCharValue(variable); // if exists, then it will invoke the getCharValue function
 	} 
-	else if(flag==2){		// if the given variable initialized to another variable has type mismatched
+	else if(flag==2){		// causes error if the given variable is type mismatched for a char type
 		if(strcmp(id[getIndex].typ,"int")==0 || strcmp(id[getIndex].typ,"float")==0){
 			printf("\n>>>> ERROR LINE %d: '%s' is not a 'char' type! <<<<",line,variable);
 			exit(1);
