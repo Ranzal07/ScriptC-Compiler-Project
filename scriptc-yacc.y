@@ -14,9 +14,9 @@ extern yylineno;
 %union {int i; float f; char* s; char* c;}    
 
 %left '+' '-'
-%left '*' '/' '%'
+%left '*' '/'
 %left '(' ')'
-%right negative
+%left UMINUS
 
     /* Yacc definitions */
 %token EQUALS
@@ -79,7 +79,7 @@ term		:	factor															{$$ = $1;}
 
 factor		:	values															{$$ = $1;}
 			|	'(' expr ')'													{$$ = $2;}		
-			|	'-' values  %prec negative    									{$$ = -$2;}		//		accepting negative numbers
+			|	'-' values  %prec UMINUS  /* Unary minus oerator will have higher precedence*/ 	{$$ = -$2;}
 			;
 
 /* values can be either int or float or variable holding the value */

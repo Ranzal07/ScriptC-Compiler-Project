@@ -3,6 +3,7 @@ x=x+135
 y:float=2333.2
 z:char='String Characters'
 
+display:"%d",10-(-2)-(-1+3)
 display:"%d",10/2+5*(2-5)
 display:"%f",(10.6)*-2
 display:"%c",z
