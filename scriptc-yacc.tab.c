@@ -120,7 +120,7 @@ extern int yydebug;
 		int iNums[100];
 		float fNums[100];
 		int numbersLen;
-		char *strings[100];
+		char* strings[100];
 		int stringsLen;
 	} type;
 
@@ -1441,7 +1441,7 @@ yyreduce:
 #line 60 "scriptc-yacc.y"
     {
 															checkVarDup((yyvsp[(1) - (5)].all).c, (yyvsp[(3) - (5)].all).c); 
-															saveThisVal((yyvsp[(1) - (5)].all).c ,(yyvsp[(5) - (5)].all).i, (yyvsp[(5) - (5)].all).f, (yyvsp[(5) - (5)].all).c); 
+															registThisVal((yyvsp[(1) - (5)].all).c ,(yyvsp[(5) - (5)].all).i, (yyvsp[(5) - (5)].all).f, (yyvsp[(5) - (5)].all).c); 
 															updateVal((yyvsp[(1) - (5)].all).c ,(yyvsp[(5) - (5)].all).i, (yyvsp[(5) - (5)].all).f, (yyvsp[(5) - (5)].all).c);
 															}
     break;
@@ -1463,7 +1463,7 @@ yyreduce:
 #line 68 "scriptc-yacc.y"
     {
 															checkVarDup((yyvsp[(1) - (5)].all).c, (yyvsp[(3) - (5)].all).c);
-															saveThisVal((yyvsp[(1) - (5)].all).c ,(yyvsp[(5) - (5)].all).i, (yyvsp[(5) - (5)].all).f, (yyvsp[(5) - (5)].all).c);
+															registThisVal((yyvsp[(1) - (5)].all).c ,(yyvsp[(5) - (5)].all).i, (yyvsp[(5) - (5)].all).f, (yyvsp[(5) - (5)].all).c);
 															updateVal((yyvsp[(1) - (5)].all).c ,(yyvsp[(5) - (5)].all).i, (yyvsp[(5) - (5)].all).f, (yyvsp[(5) - (5)].all).c);
 															}
     break;

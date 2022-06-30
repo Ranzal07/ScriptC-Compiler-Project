@@ -51,7 +51,7 @@ extern int yydebug;
 		int iNums[100];
 		float fNums[100];
 		int numbersLen;
-		char *strings[100];
+		char* strings[100];
 		int stringsLen;
 	} type;
 

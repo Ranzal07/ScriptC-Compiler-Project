@@ -22,7 +22,7 @@ extern yylineno;
 		int iNums[100];
 		float fNums[100];
 		int numbersLen;
-		char *strings[100];
+		char* strings[100];
 		int stringsLen;
 	} type;
 }
@@ -59,7 +59,7 @@ num_statements		:	NIDENTIFIER ':' type				{checkVarDup($1.c, $3.c);}
 					|	NIDENTIFIER '=' expr				{checkVarExist($1.c, $3.i, $3.f, $3.c);}
 					|	NIDENTIFIER ':' type '=' expr		{
 															checkVarDup($1.c, $3.c); 
-															saveThisVal($1.c ,$5.i, $5.f, $5.c); 
+															registThisVal($1.c ,$5.i, $5.f, $5.c); 
 															updateVal($1.c ,$5.i, $5.f, $5.c);
 															}
 
@@ -67,7 +67,7 @@ let_statements		:	SIDENTIFIER ':' CHAR				{checkVarDup($1.c, $3.c);}
 					|	SIDENTIFIER '=' str					{checkVarExist($1.c, $3.i, $3.f, $3.c);}
 					|	SIDENTIFIER ':' CHAR '=' str		{
 															checkVarDup($1.c, $3.c);
-															saveThisVal($1.c ,$5.i, $5.f, $5.c);
+															registThisVal($1.c ,$5.i, $5.f, $5.c);
 															updateVal($1.c ,$5.i, $5.f, $5.c);
 															} 
 					;

@@ -14,14 +14,13 @@ typedef struct indentifiers{
 	char cval[1000];		// cval stores char type values	
 } identifier;
 
-
+identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
 float symbols[1000];		// symbols store values to the identifier
 char* char_symbols[1000];		// symbols store chartype values to the identifier
-identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
-char stringsDisplay[100][100];
+char stringsDisplay[100][100];	// symbols store strings values to be displayed
 
 
-void addStr(char *str, int length){
+void addStr(char* str, int length){
 	strcpy(stringsDisplay[length], str);
 }
 
@@ -69,97 +68,61 @@ char* getCharValue(char* variable){
 }
 
 
-/* updateVal updates the given variable's int or float type value when given another new values */
+/* updateVal updates the given variable's value when given another new values */
 void updateVal(char* variable, int iValue, float fValue, char* cValue){
 	int i;
-	//int toIntValue = (int)value;		// typecasting to int or to convert float value datatype to int
 	int bucket = compIdxVar(variable);
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){			
 				symbols[bucket] = iValue;
-				id[i].ival = symbols[bucket];		// new int values will be saved to the struct identifiers (id.ival)		
+				id[i].ival = symbols[bucket];		// new int values will update the struct identifiers (id.ival)		
 				break;
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				symbols[bucket] = fValue;
-				id[i].fval = symbols[bucket];		// new float values will be saved to the struct identifiers (id.fval)
+				id[i].fval = symbols[bucket];		// new float values will update the struct identifiers (id.fval)
 				break;
 			}
 			else if(strcmp(id[i].typ,"char")==0){
 				char_symbols[bucket] = cValue;
-				strcpy(id[i].cval,char_symbols[bucket]);	// new float values will be saved to the struct identifiers (id.fval)
+				strcpy(id[i].cval,char_symbols[bucket]);	// new char values will update the struct identifiers (id.cval)
 				break;
 			}
 		}
 	}
 }
 
-
-/* updateCharVal updates the given variable's char type value when given another new values */
-void updateCharVal(char* variable, char* value){
-	int i;
-	
-	int bucket = compIdxVar(variable);
-	
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"char")==0){
-				char_symbols[bucket] = value;
-				strcpy(id[i].cval,char_symbols[bucket]); // new char values will be saved to the struct identifiers (id.cval)
-				break;
-			}
-		}
-	}
-}
-
-
-/* saveThisVar saves the verified given variable and its given type to the struct identifiers */
-void saveThisVar(char* variable, char* type){
+/* registThisVar registers the verified given variable and its given type to the struct identifiers */
+void registThisVar(char* variable, char* type){
 	strcpy(id[indexVar].var,variable);
 	strcpy(id[indexVar].typ,type);
-	indexVar++;		// Increments to the next ID index after saving the variable and type
+	indexVar++;		// Increments to the next ID index after registering the variable and type
 }
 
 
-/* saveThisVal saves the value (int or float type) to the struct identifiers */
-void saveThisVal(char* variable, int iValue, float fValue, char* cValue){
+/* registThisVal registers the given variable's values to the struct identifiers */
+void registThisVal(char* variable, int iValue, float fValue, char* cValue){
 	int i;
 
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
-				id[indexVar].ival = iValue;		
+				id[indexVar].ival = iValue;		// given int values will be registered the struct identifiers (id.ival)
 				break;		
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				id[indexVar].fval = fValue;	
+				id[indexVar].fval = fValue;		// given float values will be registered the struct identifiers (id.fval)	
 				break;
 			}
 			else if(strcmp(id[i].typ,"char")==0){
-				strcpy(id[indexVar].cval,cValue);	
+				strcpy(id[indexVar].cval,cValue);		// given char values will be registered the struct identifiers (id.cval)		
 				break;
 			}
 		}
 	}
 }
-
-
-/* saveThisCharVal saves the value (char type) to the struct identifiers */
-void saveThisCharVal(char* variable, char* value){
-	int i;
-	
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"char")==0){
-				strcpy(id[indexVar].cval,value);
-				break;		
-			}
-		}
-	}
-}
-
 
 /* checkVarDup checks if the given variable has duplicates or has been redeclared */
 void checkVarDup(char* variable, char* type){
@@ -178,13 +141,13 @@ void checkVarDup(char* variable, char* type){
 		exit(1);		// terminates the program
 	}
 	else{
-		saveThisVar(variable,type);		// otherwise, it will invoke the saveThisVar function to save the variable and its type
+		registThisVar(variable,type);		// otherwise, it will invoke the registThisVar function to register the variable and its type
 		// printf("\nLINE %d: Correct Variable '%s' Declaration!",line,variable);	
 	}
 }
 
 
-/* checkVarExist checks if the given variable (int or float type) exists during initialization */
+/* checkVarExist checks if the given variable exists during initialization */
 void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 	int i;
 	int flag = 0;
@@ -198,32 +161,8 @@ void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 		}
 	}
 	if(flag==1){
-		saveThisVal(variable,iValue,fValue,cValue);		// if exists, it will invoke the saveThisVar function to save the variable's value
+		registThisVal(variable,iValue,fValue,cValue);		// if exists, it will invoke the registThisVar function to save the variable's value
 		updateVal(variable,iValue,fValue,cValue);		// then, it will invoke the updateVal function to update the variable's value
-		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
-	} else {
-		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
-		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
-		exit(1);
-	}
-}
-
-
-/* checkCharVarExist checks if the given variable (char type) exists during initialization */
-void checkCharVarExist(char* variable, char* value){
-	int i;
-	int flag = 0;
-	for(i=0;i<indexVar;i++){
-		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"char")==0){
-				flag = 1;
-				break;			
-			}
-		}
-	}
-	if(flag==1){
-		saveThisCharVal(variable,value);		// if exists, it will invoke the saveThisVar function to save the variable's value
-		updateCharVal(variable,value);		// then, it will invoke the updateCharVal function to update the variable's value
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
@@ -328,7 +267,7 @@ void substringInsert(int pos, char* str1, char* str2){
 	int counter;
 	int position = pos-1;
 	int strLength = strlen(str1);
-	char *mainStr, finalStr[200];
+	char* mainStr, finalStr[200];
 	int leftChars = position;
 	int rightChars = strLength - position - 2;
 
@@ -352,17 +291,17 @@ void substringInsert(int pos, char* str1, char* str2){
 }
 
 // GETS THE POSITION OF IDENTIFIER ON STRING
-int getPosition(char *str, char *subStr){
-	char *dest = strstr(str, subStr);
+int getPosition(char* str, char* subStr){
+	char* dest = strstr(str, subStr);
 	int pos;
 	pos = dest - str + 1;
 	return pos;
 }
 
 // PRINTS THE FINAL STRING OUTPUT WITH NEW LINES
-void printFinalString(char *strFinal){
+void printFinalString(char* strFinal){
 	int counter2=0;
-	printf("\nLINE %d Output: ",line);
+	printf("\nOUTPUT LINE %d: ",line);
 	while(strFinal[counter2] != '\0')
 		{
 		 if(strFinal[counter2] == '\\' && strFinal[counter2+1] == 'n'){	
