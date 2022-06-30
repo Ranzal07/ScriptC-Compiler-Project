@@ -1,8 +1,9 @@
-shang:char="Hello World"
-nushi:int=12
-display:"%d %d",shang,nushi
-
-
-
-
-
+nuna:int
+shang:char
+nushi:float=12.4
+nuna=12+nushi
+shang="Hello World"
+sone:char='bddd'
+display:"HELLO %s %f",shang,nushi
+display:"Jiji %s %d",nuna
+display:"%s",sone

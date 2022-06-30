@@ -18,20 +18,12 @@ typedef struct indentifiers{
 float symbols[1000];		// symbols store values to the identifier
 char* char_symbols[1000];		// symbols store chartype values to the identifier
 identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
-
 char stringsDisplay[100][100];
+
 
 void addStr(char *str, int length){
 	strcpy(stringsDisplay[length], str);
 }
-
-char* checkThisCharVar(char* variable);
-int count(const char *str, const char *sub);
-void printValues(char* string);
-void substringInsert(int position, char* str1, char* str2);
-void replaceNumbers(char* string, float value);
-void printFinalString(char *strFinal);
-void printStruct(char *inputStr, int iValues[], float fValues[], int numbersLen, int stringsLen);
 
 
 /* compIdxVar will compute the given variable index and return it */    
@@ -199,7 +191,7 @@ void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0 || strcmp(id[i].typ,"char")==0){
 				flag = 1;
 				break;			
 			}
@@ -317,111 +309,6 @@ char* checkThisCharVar(char* variable){
 	}
 }
 
-
-/* oneNumValPrint prints one given variable's number value */
-void oneNumValPrint(char* specifier, int iValue, float fValue){
-
-	if(strcmp(specifier,"%d")==0){
-		printf("\nLINE %d Output: %d",line,iValue);		// prints integer
-	}
-	else if(strcmp(specifier,"%f")==0){
-		printf("\nLINE %d Output: %f",line,fValue);		// prints float
-	}
-}
-
-
-/* tw0ValPrint prints two given variable's number values */
-void twoNumValPrint(char* specifier, char* specifier2, int iValue, float fValue, int iValue2, float fValue2){
-
-	if(strcmp(specifier,"%d")==0){
-		if(strcmp(specifier2,"%d")==0){
-			printf("\nLINE %d Output: %d%d",line,iValue,iValue2);		// prints two integers
-		}
-		else{
-			printf("\nLINE %d Output: %d%f",line,iValue,fValue2);		// prints integer then float
-		}
-	}
-	else if(strcmp(specifier,"%f")==0){
-		if(strcmp(specifier2,"%f")==0){
-			printf("\nLINE %d Output: %f%f",line,fValue,fValue2);		// prints two floats
-		}
-		else{
-			printf("\nLINE %d Output: %f%d",line,fValue,iValue2);		// prints float, then integer
-		}
-	}
-}
-
-
-/* oneCharValPrint prints one given variable's character value */
-void oneCharValPrint(char* specifier, char* cValue){
-	char* c;
-	
-	if(strcmp(specifier,"%c")==0){
-		printf("\nLINE %d Output: %c",line,cValue[0]);	// prints single character
-	}
-	else if(strcmp(specifier,"%s")==0){
-		printf("\nLINE %d Output: %s",line,cValue);	// prints strings
-	}
-}
-
-
-/* twoCharValPrint prints two given variable's character values */
-void twoCharValPrint(char* specifier, char* specifier2, char* cValue, char* cValue2){
-
-	if(strcmp(specifier,"%c")==0){
-		if(strcmp(specifier2,"%c")==0){
-			printf("\nLINE %d Output: %c%c",line,cValue[0],cValue2[0]);		// prints two single character
-		}
-		else if(strcmp(specifier2,"%s")==0){
-			printf("\nLINE %d Output: %c%s",line,cValue[0],cValue2);		// prints single character, then strings
-		}
-	}
-	else if(strcmp(specifier,"%s")==0){
-		if(strcmp(specifier2,"%c")==0){
-			printf("\nLINE %d Output: %s%c",line,cValue,cValue2[0]);		// prints strings, then single character
-		}
-		else if(strcmp(specifier2,"%s")==0){
-			printf("\nLINE %d Output: %s%s",line,cValue,cValue2);		// prints two strings
-		}
-	}
-}
-
-
-/* NumCharValPrint prints the number values first, then the character values */
-void NumCharValPrint(char* specifier, char* specifier2, int iValue, float fValue, char* cValue){
-
-	if(strcmp(specifier,"%d")==0){
-		if(strcmp(specifier2,"%c")==0)
-			printf("\nLINE %d Output: %d%c",line,iValue,cValue[0]);	// prints integer, then single character
-		else if(strcmp(specifier2,"%s")==0)
-			printf("\nLINE %d Output: %d%s",line,iValue,cValue);	// prints integer, then strings
-	}
-	else if(strcmp(specifier,"%f")==0){
-		if(strcmp(specifier2,"%c")==0)
-			printf("\nLINE %d Output: %f%c",line,fValue,cValue[0]);	// prints float, then single character
-		else if(strcmp(specifier2,"%s")==0)
-			printf("\nLINE %d Output: %f%s",line,fValue,cValue);	// prints float, then strings
-	}
-}
-
-
-/* CharNumValPrint prints the character values first, then the number values */
-void CharNumValPrint(char* specifier, char* specifier2, char* cValue, int iValue, float fValue){
-
-	if(strcmp(specifier,"%c")==0){
-		if(strcmp(specifier2,"%d")==0)
-			printf("\nLINE %d Output: %c%d",line,cValue[0],iValue);	// prints single character, then integer
-		else if(strcmp(specifier2,"%f")==0)
-			printf("\nLINE %d Output: %c%f",line,cValue[0],fValue);	// prints single character, then float
-	}
-	else if(strcmp(specifier,"%s")==0){
-		if(strcmp(specifier2,"%d")==0)
-			printf("\nLINE %d Output: %s%d",line,cValue,iValue);	// prints strings, then integer
-		else if(strcmp(specifier2,"%f")==0)
-			printf("\nLINE %d Output: %s%f",line,cValue,fValue);	// prints strings, then float
-	}
-}
-
 void printValues(char* string){
 	printf("%s", string);
 }
@@ -491,7 +378,7 @@ void printFinalString(char *strFinal){
 void printStruct(char* inputStr, int iValues[], float fValues[], int numbersLen, int stringsLen) {
 	int numSpecifiers=0, strSpecifiers=0, floatSpecifiers=0, integerSpecifiers=0, charSpecifiers=0, stringSpecifiers=0;
 	
-	int posfloat, posint, poschar, posstr, counter;
+	int posfloat=0, posint=0, poschar=0, posstr=0, counter;
 	char strFinal[200], strInitial[200], strValue[100];
 
 	floatSpecifiers = count(inputStr, "%f");
@@ -554,12 +441,12 @@ void printStruct(char* inputStr, int iValues[], float fValues[], int numbersLen,
 
 			} else if (poschar && posstr && (posstr > poschar)) {
 				// printf("if 2 -> %s\n", stringsDisplay[counter]);
-				sprintf(strValue, "%c", stringsDisplay[counter][0]);
+				sprintf(strValue, "%c", stringsDisplay[counter][strlen(stringsDisplay[counter])-1]);
 				substringInsert(poschar, strFinal, strValue);
 
 			} else if (!posstr && poschar){
 				// printf("if 3 -> %s\n", stringsDisplay[counter]);
-				sprintf(strValue, "%c", stringsDisplay[counter][0]);
+				sprintf(strValue, "%c", stringsDisplay[counter][strlen(stringsDisplay[counter])-1]);
 				substringInsert(poschar, strFinal, strValue);
 
 			} else if(!poschar && posstr){
