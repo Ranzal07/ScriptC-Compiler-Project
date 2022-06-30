@@ -20,6 +20,28 @@ char* char_symbols[1000];		// symbols store chartype values to the identifier
 char stringsDisplay[100][100];	// symbols store strings values to be displayed
 
 
+int getType(char *variable){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if (strcmp(id[i].typ,"int")==0){
+				flag = 1;
+				break;
+			} else if (strcmp(id[i].typ,"float")==0){
+				flag = 2;
+				break;
+			} else if (strcmp(id[i].typ,"char")==0){
+				flag = 3;
+				break;
+			}
+		}
+	}
+	return flag;
+}
+
+
 void addStr(char* str, int length){
 	strcpy(stringsDisplay[length], str);
 }
@@ -171,6 +193,26 @@ void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 	}
 }
 
+/* checkVarExist checks if the given variable exists during initialization */
+void checkVar(char* variable){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0 || strcmp(id[i].typ,"char")==0){
+				flag = 1;
+				break;			
+			}
+		}
+	}
+	if(flag==0){
+		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
+		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
+		exit(1);
+	}
+}
+
 
 /* checkThisVar checks if the given variable (int or float type) initialized to another variable exists */
 /* checkThisVar also checks if the given variable (int or float type) exists during printing and type matching */
@@ -247,6 +289,11 @@ char* checkThisCharVar(char* variable){
 		exit(1);
 	}
 }
+
+char* getStringFromId(char *str){
+	char* val = checkThisCharVar(str);
+}
+
 
 void printValues(char* string){
 	printf("%s", string);

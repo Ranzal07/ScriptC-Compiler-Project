@@ -677,22 +677,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "scriptc-lex.l"
+#line 16 "scriptc-lex.l"
 {yylval.all.i = atof(yytext); return INTEGERS;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 19 "scriptc-lex.l"
+#line 17 "scriptc-lex.l"
 {yylval.all.f = atof(yytext); return DECIMALS;}       
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 20 "scriptc-lex.l"
+#line 18 "scriptc-lex.l"
 {yylval.all.c = strdup(yytext); return IDENTIFIER;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 23 "scriptc-lex.l"
+#line 20 "scriptc-lex.l"
 {
                                         yylval.all.c = strdup(yytext+1);
                                         if (yylval.all.c[yyleng-2] != '"')
@@ -704,7 +704,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 33 "scriptc-lex.l"
+#line 30 "scriptc-lex.l"
 {
                                           yylval.all.c = strdup(yytext+1);
                                           if (yylval.all.c[yyleng-2] != '\'')
@@ -716,27 +716,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 43 "scriptc-lex.l"
+#line 40 "scriptc-lex.l"
 {return NEWLINE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 45 "scriptc-lex.l"
+#line 42 "scriptc-lex.l"
 ;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 46 "scriptc-lex.l"
+#line 43 "scriptc-lex.l"
 {return yytext[0];}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 47 "scriptc-lex.l"
+#line 44 "scriptc-lex.l"
 {ECHO; yyerror ("unexpected character");}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 49 "scriptc-lex.l"
+#line 46 "scriptc-lex.l"
 ECHO;
 	YY_BREAK
 #line 743 "lex.yy.c"
@@ -1623,6 +1623,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 49 "scriptc-lex.l"
+#line 46 "scriptc-lex.l"
 
 int yywrap (void) {return 1;}

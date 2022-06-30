@@ -12,13 +12,10 @@
 "int"                               {yylval.all.c = strdup(yytext); return INT;}
 "float"                             {yylval.all.c = strdup(yytext); return FLOAT;}
 "char"                              {yylval.all.c = strdup(yytext); return CHAR;}
-
-
-                             
+      
 [0-9]+                              {yylval.all.i = atof(yytext); return INTEGERS;}
 [0-9]+\.[0-9]+                      {yylval.all.f = atof(yytext); return DECIMALS;}       
 [a-zA-Z_]+                          {yylval.all.c = strdup(yytext); return IDENTIFIER;}
-
 
 \"([^"]|\\\")*\"                    {
                                         yylval.all.c = strdup(yytext+1);

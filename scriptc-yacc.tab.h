@@ -53,11 +53,15 @@ extern int yydebug;
 		int numbersLen;
 		char* strings[100];
 		int stringsLen;
+		int dType;
+		int iValues;
+		float fValues;
+		char* cValues;
 	} type;
 
 
 /* Line 2579 of glr.c  */
-#line 61 "scriptc-yacc.tab.h"
+#line 65 "scriptc-yacc.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -83,11 +87,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2579 of glr.c  */
-#line 30 "scriptc-yacc.y"
+#line 34 "scriptc-yacc.y"
 type all;
 
 /* Line 2579 of glr.c  */
-#line 91 "scriptc-yacc.tab.h"
+#line 95 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
