@@ -27,6 +27,7 @@
                                               yylval.all.c[yyleng-2] = 0;
                                           return CHARACTER;
                                     }
+'='                                 {return EQUALS;}
 
 \n                                  {return NEWLINE;}
 

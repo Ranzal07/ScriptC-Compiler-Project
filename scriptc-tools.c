@@ -14,14 +14,14 @@ typedef struct indentifiers{
 	char cval[1000];		// cval stores char type values	
 } identifier;
 
-typedef struct symbols{
-	int iSym;
-	float fSym;
-	char* cSym;
-} symbol;
+typedef struct types{
+	int i;
+	float f;
+	char* c;
+} type;
 
 
-symbol symbols[1000];		// symbols store values to the identifier
+type symbols[1000];		// symbols store values to the identifier
 char* char_symbols[1000];		// symbols store chartype values to the identifier
 identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
 
@@ -35,22 +35,22 @@ int compIdxVar(char* variable){
 
 
 /* getValue gets the given variable's int or float value and return it to the IDENTIFIER token */
-symbol getValue(char* variable){	
+type getValue(char* variable){	
 	int i;
 	
 	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){		// <-- this means if the struct id.var is equal to the current variable name
 			if(strcmp(id[i].typ,"int")==0){
-				symbols[bucket].iSym = id[i].ival;	
+				symbols[bucket].i = id[i].ival;	
 				return symbols[bucket];		// returns the given variable's recognized int value according to its index
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				symbols[bucket].fSym = id[i].fval;
+				symbols[bucket].f = id[i].fval;
 				return symbols[bucket];		// returns the current variable's recognized float value according to its index
 			}	
 			else if(strcmp(id[i].typ,"char")==0){
-				strcpy(symbols[bucket].cSym,id[i].cval);
+				strcpy(symbols[bucket].c,id[i].cval);
 				return symbols[bucket];		// returns the current variable's recognized float value according to its index
 			}	
 		}
@@ -83,18 +83,18 @@ void updateVal(char* variable, int iValue, float fValue, char* cValue){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){			
-				symbols[bucket].iSym = iValue;
-				id[i].ival = symbols[bucket].iSym;		// new int values will be saved to the struct identifiers (id.ival)		
+				symbols[bucket].i = iValue;
+				id[i].ival = symbols[bucket].i;		// new int values will be saved to the struct identifiers (id.ival)		
 				break;
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				symbols[bucket].fSym = fValue;
-				id[i].fval = symbols[bucket].fSym;		// new float values will be saved to the struct identifiers (id.fval)
+				symbols[bucket].f = fValue;
+				id[i].fval = symbols[bucket].f;		// new float values will be saved to the struct identifiers (id.fval)
 				break;
 			}
 			else if(strcmp(id[i].typ,"char")==0){
-				symbols[bucket].cSym = cValue;
-				strcpy(id[i].cval,symbols[bucket].cSym);	// new float values will be saved to the struct identifiers (id.fval)
+				symbols[bucket].c = cValue;
+				strcpy(id[i].cval,symbols[bucket].c);	// new float values will be saved to the struct identifiers (id.fval)
 				break;
 			}
 		}
@@ -240,10 +240,9 @@ void checkCharVarExist(char* variable, char* value){
 
 /* checkThisVar checks if the given variable (int or float type) initialized to another variable exists */
 /* checkThisVar also checks if the given variable (int or float type) exists during printing and type matching */
-symbol checkThisVar(char* variable){
+type checkThisVar(char* variable){
 	int i,getIndex;
 	int flag = 0;
-	symbol sym;
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
@@ -423,4 +422,3 @@ void CharNumValPrint(char* specifier, char* specifier2, char* cValue, int iValue
 void printAnything(char* strings){
 	printf("\nLINE %d Output: %s",line,strings);	// prints strings, then integer
 }
-
