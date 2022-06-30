@@ -51,7 +51,7 @@ program		:	commands
 commands	:	num_statements
 			|	let_statements
 			|	print
-			|	NEWLINE															{line++;}
+			|	NEWLINE										{line++;}
 			;
 
 /* expected inputs for the variable declaration & initialization */
