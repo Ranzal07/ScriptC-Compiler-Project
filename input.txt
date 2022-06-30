@@ -1,23 +1,10 @@
-n : int
-nu : int
-nu = -10
-n = 5
-nina = 43
-num : int = 1+2*19
-display : "%d",n
-numyad : float
-numy : float = 16.3+5
-numyad = -30.3 + numy
-numya : float
-numya = -25.2
-n = 13
-n : float
-
-display : "%d" , n
-display : "%d" , nu
-display : "%d" , num
-display : "%f" , numy
-display : "%f" , numya
-display : "%f" , numyad
-
-
+nuna:int
+shang:char
+neng:int=14
+nushi:float=12.4
+nuna=12+nushi
+shang="Texas"
+sone:char='Tennessee'
+display:"%d Hello %s Arkansas %f Mississippi %c",neng,shang,nushi,shang
+display:"Jiji %s %d",nuna
+display:"%c",sone
