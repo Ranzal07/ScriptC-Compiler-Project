@@ -314,7 +314,7 @@ void printFinalString(char* strFinal){
 
 
 // PRINTS THE STRING FOR THE FINAL PRODUCT IN YACC LINE 69
-void printStruct(char* inputStr, int iValues[], float fValues[], int numbersLen, int stringsLen) {
+void printStruct(char* inputStr, const int iValues[], const float fValues[], int numbersLen, int stringsLen) {
 	int numSpecifiers=0, strSpecifiers=0, floatSpecifiers=0, integerSpecifiers=0, charSpecifiers=0, stringSpecifiers=0;
 	
 	int posfloat=0, posint=0, poschar=0, posstr=0, counter;
