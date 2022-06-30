@@ -109,15 +109,15 @@ void registThisVal(char* variable, int iValue, float fValue, char* cValue){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
-				id[indexVar].ival = iValue;		// given int values will be registered the struct identifiers (id.ival)
+				id[indexVar].ival = iValue;		// given int values will be registered to the struct identifiers (id.ival)
 				break;		
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				id[indexVar].fval = fValue;		// given float values will be registered the struct identifiers (id.fval)	
+				id[indexVar].fval = fValue;		// given float values will be registered to the struct identifiers (id.fval)	
 				break;
 			}
 			else if(strcmp(id[i].typ,"char")==0){
-				strcpy(id[indexVar].cval,cValue);		// given char values will be registered the struct identifiers (id.cval)		
+				strcpy(id[indexVar].cval,cValue);		// given char values will be registered to the struct identifiers (id.cval)		
 				break;
 			}
 		}
