@@ -39,6 +39,25 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+/* Line 2058 of yacc.c  */
+#line 16 "scriptc-yacc.y"
+
+	typedef struct types{
+		int i;
+		float f;
+		char* c;
+
+		int iNums[100];
+		float fNums[100];
+		int numbersLen;
+		char* strings[100];
+		int stringsLen;
+	} type;
+
+
+/* Line 2058 of yacc.c  */
+#line 61 "scriptc-yacc.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -46,17 +65,18 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     display = 258,
-     IDENTIFIER = 259,
-     NUM_SPECIFIER = 260,
-     NEWLINE = 261,
-     INT = 262,
-     CHAR = 263,
-     FLOAT = 264,
-     INTEGERS = 265,
-     DECIMALS = 266,
-     CHARACTER = 267,
-     LET_SPECIFIER = 268
+     UMINUS = 258,
+     display = 259,
+     NEWLINE = 260,
+     INTEGERS = 261,
+     DECIMALS = 262,
+     CHARACTER = 263,
+     NIDENTIFIER = 264,
+     SIDENTIFIER = 265,
+     INT = 266,
+     FLOAT = 267,
+     CHAR = 268,
+     STRING = 269
    };
 #endif
 
@@ -65,11 +85,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 11 "scriptc-yacc.y"
-int i; float f; char* s; char* c;
+#line 30 "scriptc-yacc.y"
+type all;
 
 /* Line 2058 of yacc.c  */
-#line 73 "scriptc-yacc.tab.h"
+#line 93 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
