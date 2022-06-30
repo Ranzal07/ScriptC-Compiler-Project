@@ -14,17 +14,24 @@ typedef struct indentifiers{
 	char cval[1000];		// cval stores char type values	
 } identifier;
 
-typedef struct types{
-	int i;
-	float f;
-	char* c;
-} type;
 
-
-type symbols[1000];		// symbols store values to the identifier
+float symbols[1000];		// symbols store values to the identifier
 char* char_symbols[1000];		// symbols store chartype values to the identifier
 identifier id[1000];		// id will be the struct variable name and has 1000 indexes to store data
 
+char stringsDisplay[100][100];
+
+void addStr(char *str, int length){
+	strcpy(stringsDisplay[length], str);
+}
+
+char* checkThisCharVar(char* variable);
+int count(const char *str, const char *sub);
+void printValues(char* string);
+void substringInsert(int position, char* str1, char* str2);
+void replaceNumbers(char* string, float value);
+void printFinalString(char *strFinal);
+void printStruct(char *inputStr, int iValues[], float fValues[], int numbersLen, int stringsLen);
 
 
 /* compIdxVar will compute the given variable index and return it */    
@@ -35,22 +42,18 @@ int compIdxVar(char* variable){
 
 
 /* getValue gets the given variable's int or float value and return it to the IDENTIFIER token */
-type getValue(char* variable){	
+float getValue(char* variable){	
 	int i;
 	
 	int bucket = compIdxVar(variable);		// recognized variable index will be initialized to the bucket variable
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){		// <-- this means if the struct id.var is equal to the current variable name
 			if(strcmp(id[i].typ,"int")==0){
-				symbols[bucket].i = id[i].ival;	
-				return symbols[bucket];		// returns the given variable's recognized int value according to its index
+				symbols[bucket] = id[i].ival;	
+				return (int)symbols[bucket];		// returns the given variable's recognized int value according to its index
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				symbols[bucket].f = id[i].fval;
-				return symbols[bucket];		// returns the current variable's recognized float value according to its index
-			}	
-			else if(strcmp(id[i].typ,"char")==0){
-				strcpy(symbols[bucket].c,id[i].cval);
+				symbols[bucket] = id[i].fval;
 				return symbols[bucket];		// returns the current variable's recognized float value according to its index
 			}	
 		}
@@ -83,18 +86,18 @@ void updateVal(char* variable, int iValue, float fValue, char* cValue){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){			
-				symbols[bucket].i = iValue;
-				id[i].ival = symbols[bucket].i;		// new int values will be saved to the struct identifiers (id.ival)		
+				symbols[bucket] = iValue;
+				id[i].ival = symbols[bucket];		// new int values will be saved to the struct identifiers (id.ival)		
 				break;
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				symbols[bucket].f = fValue;
-				id[i].fval = symbols[bucket].f;		// new float values will be saved to the struct identifiers (id.fval)
+				symbols[bucket] = fValue;
+				id[i].fval = symbols[bucket];		// new float values will be saved to the struct identifiers (id.fval)
 				break;
 			}
 			else if(strcmp(id[i].typ,"char")==0){
-				symbols[bucket].c = cValue;
-				strcpy(id[i].cval,symbols[bucket].c);	// new float values will be saved to the struct identifiers (id.fval)
+				char_symbols[bucket] = cValue;
+				strcpy(id[i].cval,char_symbols[bucket]);	// new float values will be saved to the struct identifiers (id.fval)
 				break;
 			}
 		}
@@ -240,7 +243,7 @@ void checkCharVarExist(char* variable, char* value){
 
 /* checkThisVar checks if the given variable (int or float type) initialized to another variable exists */
 /* checkThisVar also checks if the given variable (int or float type) exists during printing and type matching */
-type checkThisVar(char* variable){
+float checkThisNumVar(char* variable){
 	int i,getIndex;
 	int flag = 0;
 	
@@ -315,8 +318,8 @@ char* checkThisCharVar(char* variable){
 }
 
 
-/* oneValPrint prints one given variable's number value */
-void oneValPrint(char* specifier, int iValue, float fValue){
+/* oneNumValPrint prints one given variable's number value */
+void oneNumValPrint(char* specifier, int iValue, float fValue){
 
 	if(strcmp(specifier,"%d")==0){
 		printf("\nLINE %d Output: %d",line,iValue);		// prints integer
@@ -419,6 +422,157 @@ void CharNumValPrint(char* specifier, char* specifier2, char* cValue, int iValue
 	}
 }
 
-void printAnything(char* strings){
-	printf("\nLINE %d Output: %s",line,strings);	// prints strings, then integer
+void printValues(char* string){
+	printf("%s", string);
 }
+
+// USED FOR COUNTING THE SPECIFIERS FOUND IN THE DISPLAY STRING
+int count(const char *str, const char *sub) {
+    int sublen = strlen(sub);
+    if (sublen == 0) return 0;
+    int res = 0;
+    for (str = strstr(str, sub); str; str = strstr(str + sublen, sub))
+        ++res;
+    return res;
+}
+
+// REPLACES THE IDENTIFIER WITH THEIR VALUES
+void substringInsert(int pos, char* str1, char* str2){
+	int counter;
+	int position = pos-1;
+	int strLength = strlen(str1);
+	char *mainStr, finalStr[200];
+	int leftChars = position;
+	int rightChars = strLength - position - 2;
+
+	char left[100] = "";
+
+	for (counter = 0; counter < leftChars; counter++){
+		char currentChar = str1[counter];
+		strncat(left, &currentChar, 1);
+	}
+
+	char right[100] = "";
+
+	for (counter = 0; counter < rightChars; counter++){
+		char currentChar = str1[position + 2 + counter];
+		strncat(right, &currentChar, 1);
+	}
+
+	strcpy(str1, left);
+	strcat(str1, str2);
+	strcat(str1, right);
+}
+
+// GETS THE POSITION OF IDENTIFIER ON STRING
+int getPosition(char *str, char *subStr){
+	char *dest = strstr(str, subStr);
+	int pos;
+	pos = dest - str + 1;
+	return pos;
+}
+
+// PRINTS THE FINAL STRING OUTPUT WITH NEW LINES
+void printFinalString(char *strFinal){
+	int counter2=0;
+	printf("\nLINE %d Output: ",line);
+	while(strFinal[counter2] != '\0')
+		{
+		 if(strFinal[counter2] == '\\' && strFinal[counter2+1] == 'n'){	
+			printf("\n");
+			counter2++;
+		} else printf("%c", strFinal[counter2]);
+			counter2++;
+	}
+}
+
+
+// PRINTS THE STRING FOR THE FINAL PRODUCT IN YACC LINE 69
+void printStruct(char* inputStr, int iValues[], float fValues[], int numbersLen, int stringsLen) {
+	int numSpecifiers=0, strSpecifiers=0, floatSpecifiers=0, integerSpecifiers=0, charSpecifiers=0, stringSpecifiers=0;
+	
+	int posfloat, posint, poschar, posstr, counter;
+	char strFinal[200], strInitial[200], strValue[100];
+
+	floatSpecifiers = count(inputStr, "%f");
+	integerSpecifiers = count(inputStr, "%d");
+	charSpecifiers = count(inputStr, "%c");
+	stringSpecifiers = count(inputStr, "%s");
+
+	// final string
+	strcpy(strFinal, inputStr);
+	strcpy(strInitial, inputStr);
+	
+	numSpecifiers = floatSpecifiers + integerSpecifiers;
+	strSpecifiers = charSpecifiers + stringSpecifiers;
+
+	int position;
+
+	// prints the number specifiers
+	if(numSpecifiers > 0){
+		for (counter = 0; counter <= numSpecifiers && counter <= numbersLen; counter++)
+		{
+			floatSpecifiers = count(strFinal, "%f");
+			integerSpecifiers = count(strFinal, "%d");
+	
+			if(floatSpecifiers) posfloat = getPosition(strFinal, "%f"); 
+			if(integerSpecifiers) posint = getPosition(strFinal, "%d"); 
+
+			if(posfloat && posint && (posfloat < posint)){
+				sprintf(strValue, "%f", fValues[counter]);
+				substringInsert(posfloat, strFinal, strValue);
+			} else if (posfloat && posint && (posfloat > posint)) {
+				sprintf(strValue, "%d", iValues[counter]);
+				substringInsert(posint, strFinal, strValue);
+			} else if (!posint && posfloat){
+				sprintf(strValue, "%f", fValues[counter]);
+				substringInsert(posfloat, strFinal, strValue);
+			} else if(!posfloat && posint){
+				sprintf(strValue, "%d", iValues[counter]);
+				substringInsert(posint, strFinal, strValue);
+			}
+
+			posfloat = posint = 0;
+		}
+	}
+
+	// prints the string specifiers
+	if(strSpecifiers > 0){
+
+		for (counter = 0; counter <= strSpecifiers && counter <= stringsLen; counter++)
+		{
+			charSpecifiers = count(strFinal, "%c");
+			stringSpecifiers = count(strFinal, "%s");
+	
+			if(charSpecifiers) poschar = getPosition(strFinal, "%c"); 
+			if(stringSpecifiers) posstr = getPosition(strFinal, "%s"); 
+
+			if(posstr && poschar && (posstr < poschar)){
+				// printf("if 1 -> %s\n", stringsDisplay[counter]);
+				sprintf(strValue, "%s", stringsDisplay[counter]);
+				substringInsert(posstr, strFinal, strValue);
+
+			} else if (poschar && posstr && (posstr > poschar)) {
+				// printf("if 2 -> %s\n", stringsDisplay[counter]);
+				sprintf(strValue, "%c", stringsDisplay[counter][0]);
+				substringInsert(poschar, strFinal, strValue);
+
+			} else if (!posstr && poschar){
+				// printf("if 3 -> %s\n", stringsDisplay[counter]);
+				sprintf(strValue, "%c", stringsDisplay[counter][0]);
+				substringInsert(poschar, strFinal, strValue);
+
+			} else if(!poschar && posstr){
+				// printf("if 4 -> %s\n", stringsDisplay[counter]);
+				sprintf(strValue, "%s", stringsDisplay[counter]);
+				substringInsert(posstr, strFinal, strValue);
+			}
+
+			poschar = posstr = 0;
+
+		} 
+	}
+	printFinalString(strFinal);
+}
+
+

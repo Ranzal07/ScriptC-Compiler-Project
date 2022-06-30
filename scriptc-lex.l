@@ -9,16 +9,27 @@
 
 %%
 "display"                           {return display;}
-
 "int"                               {yylval.all.c = strdup(yytext); return INT;}
 "float"                             {yylval.all.c = strdup(yytext); return FLOAT;}
 "char"                              {yylval.all.c = strdup(yytext); return CHAR;}
-%d|%f                               {yylval.all.c = strdup(yytext); return NUM_SPECIFIER;}
-%c|%s                               {yylval.all.c = strdup(yytext); return LET_SPECIFIER;}
+
+
                              
 [0-9]+                              {yylval.all.i = atof(yytext); return INTEGERS;}
 [0-9]+\.[0-9]+                      {yylval.all.f = atof(yytext); return DECIMALS;}       
-[a-zA-Z_]+                          {yylval.all.c = strdup(yytext); return IDENTIFIER;}
+[n][a-zA-Z_]+                       {yylval.all.c = strdup(yytext); return NIDENTIFIER;}
+[s][a-zA-Z_]+                       {yylval.all.c = strdup(yytext); return SIDENTIFIER;}
+
+\"([^"]|\\\")*\"                    {
+                                        yylval.all.c = strdup(yytext+1);
+                                        if (yylval.all.c[yyleng-2] != '"')
+                                            yyerror("improperly terminated string");
+                                        else
+                                            yylval.all.c[yyleng-2] = 0;
+                                        return STRING;
+                                    }
+
+
 \'.*\'                              {
                                           yylval.all.c = strdup(yytext+1);
                                           if (yylval.all.c[yyleng-2] != '\'')
@@ -27,12 +38,12 @@
                                               yylval.all.c[yyleng-2] = 0;
                                           return CHARACTER;
                                     }
-'='                                 {return EQUALS;}
+
 
 \n                                  {return NEWLINE;}
 
 [ \t\n]                             ;
-[-+*/=":,()]                        {return yytext[0];}
+[-+*/=":,]                        {return yytext[0];}
 .                                   {ECHO; yyerror ("unexpected character");}
 
 %%

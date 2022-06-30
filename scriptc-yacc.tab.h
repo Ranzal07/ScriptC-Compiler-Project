@@ -43,11 +43,21 @@ extern int yydebug;
 /* Line 2058 of yacc.c  */
 #line 16 "scriptc-yacc.y"
 
-	#include "scriptc-tools.c"
+	typedef struct types{
+		int i;
+		float f;
+		char* c;
+
+		int iNums[100];
+		float fNums[100];
+		int numbersLen;
+		char *strings[100];
+		int stringsLen;
+	} type;
 
 
 /* Line 2058 of yacc.c  */
-#line 51 "scriptc-yacc.tab.h"
+#line 61 "scriptc-yacc.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -58,16 +68,15 @@ extern int yydebug;
      UMINUS = 258,
      display = 259,
      NEWLINE = 260,
-     EQUALS = 261,
-     INTEGERS = 262,
-     DECIMALS = 263,
-     CHARACTER = 264,
-     IDENTIFIER = 265,
-     NUM_SPECIFIER = 266,
-     LET_SPECIFIER = 267,
-     INT = 268,
-     FLOAT = 269,
-     CHAR = 270
+     INTEGERS = 261,
+     DECIMALS = 262,
+     CHARACTER = 263,
+     NIDENTIFIER = 264,
+     SIDENTIFIER = 265,
+     INT = 266,
+     FLOAT = 267,
+     CHAR = 268,
+     STRING = 269
    };
 #endif
 
@@ -76,11 +85,11 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 20 "scriptc-yacc.y"
+#line 30 "scriptc-yacc.y"
 type all;
 
 /* Line 2058 of yacc.c  */
-#line 84 "scriptc-yacc.tab.h"
+#line 93 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

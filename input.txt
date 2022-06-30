@@ -1,20 +1,6 @@
-xin:int
-xin=1233
-jeng:float=2333.2
-vag:int=11
-zhu:char='String Characteristic'
-Jye:char='Alibaba Badibadi'
-vlu:int=44
-moz:char
-upho:float=xin+1.4
-
-display:"%d",xin
-display:"%s%s",Jye,zhu
-display:"%d",10-(-2)-(-1+3)
-display:"%d",10/2+5*(2-5)
-display:"%f",(10.6)*-2
-display:"%c",zhu
-display:"%s",zhu
+shang:char="Hello World"
+nushi:int=12
+display:"%d %d",shang,nushi
 
 
 
