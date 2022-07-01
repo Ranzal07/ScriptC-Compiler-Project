@@ -1,0 +1,13 @@
+izhu:float=1.3
+chaw:char='Boombastic!'
+fuv:float
+chey:char
+chey="Supercalifragilistic!"
+flit:float=1.4
+fuv=1.47
+cheb:char="Hey Ya!"
+iphu:int
+iphu=33
+
+display:"PIPIPIP %s %f POPPY %s %f %f %c GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
+display:"Hehe"

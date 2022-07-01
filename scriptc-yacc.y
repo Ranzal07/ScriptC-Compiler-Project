@@ -28,6 +28,7 @@ extern yylineno;
 		int iValues;
 		float fValues;
 		char* cValues;
+		int typVal;
 	} type;
 }
 
@@ -60,7 +61,8 @@ commands	:	num_statements
 
 /* expected inputs for the variable declaration & initialization */
 num_statements		:	ID ':' type						{checkVarDup($1.c, $3.c);}
-					|	ID '=' expr						{checkVarExist($1.c, $3.i, $3.f, $3.c);}
+					|	ID '=' expr						{checkVarExist($1.c, $3.i, $3.f, $3.c, $3.typVal);}
+					|	ID '=' ID						{checkVar($3.c); checkVarExist($1.c, $3.i, $3.f, $3.c, $3.dType);}
 					|	ID ':' type '=' expr			{
 															checkVarDup($1.c, $3.c); 
 															registThisVal($1.c ,$5.i, $5.f, $5.c); 
@@ -75,7 +77,7 @@ num_statements		:	ID ':' type						{checkVarDup($1.c, $3.c);}
 					;
 
 let_statements		:	ID ':' CHAR						{checkVarDup($1.c, $3.c);}
-					|	ID '=' str						{checkVarExist($1.c, $3.i, $3.f, $3.c);}
+					|	ID '=' str						{checkVarExist($1.c, $3.i, $3.f, $3.c, $3.typVal);}
 					|	ID ':' CHAR '=' str				{
 															checkVarDup($1.c, $3.c);
 															registThisVal($1.c ,$5.i, $5.f, $5.c);
@@ -222,20 +224,22 @@ factor		:	values									{
 															$$.f = $2.f;
 														}		
 			|	'-' values  %prec UMINUS   				{	$$.i = -$2.i; 								
-															$$.f = -$2.f;
+	/* Unary minus oerator will have higher precedence*/	$$.f = -$2.f;
 														}
-			;/* Unary minus oerator will have higher precedence*/
+			;
 
 /* values can be either int or float or variable holding the value */
-values		:	INTEGERS								{$$.i = $1.i;}
-			|	DECIMALS								{$$.f = $1.f;}
+values		:	INTEGERS								{$$.i = $1.i; $$.typVal = 1;}
+			|	DECIMALS								{$$.f = $1.f; $$.typVal = 2;}
 			;
 
-/* str can be either character or variable holding the value */
-str			:	CHARACTER								{$$.c = $1.c;}
-			|	STRING									{$$.c = $1.c;}
+/* str can be either character, strings or variable holding the value */
+str			:	CHARACTER								{$$.c = $1.c; $$.typVal = 3;}
+			|	STRING									{$$.c = $1.c; $$.typVal = 3;}
 			;
 
+
+/* ID */
 ID			:	IDENTIFIER								{													
 															$$.c = $1.c;
 															if(getType($1.c)==1) {

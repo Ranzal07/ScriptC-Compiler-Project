@@ -21,6 +21,8 @@ char* char_symbols[1000];		// symbols store chartype values to the identifier
 char stringsDisplay[100][100];	// symbols store strings values to be displayed
 
 
+
+/* getType will get the value' type and return it */ 
 int getType(char *variable){
 	int i;
 	int flag = 0;
@@ -42,7 +44,7 @@ int getType(char *variable){
 	return flag;
 }
 
-
+/* addStr will add the string to the string table */ 
 void addStr(char* str, int length){
 	strcpy(stringsDisplay[length], str);
 }
@@ -122,6 +124,7 @@ void updateVal(char* variable, int iValue, float fValue, char* cValue){
 	}
 }
 
+
 /* registThisVar registers the verified given variable and its given type to the struct identifiers */
 void registThisVar(char* variable, char* type){
 	strcpy(id[indexVar].var,variable);
@@ -131,13 +134,15 @@ void registThisVar(char* variable, char* type){
 
 
 
-
-void checkValue(char* variable, int iValue, float fValue, char* cValue){
+/* checkValue checks the values type matching */ 
+void checkValue(char* variable, int iValue, float fValue, char* cValue, int type){
 	int i;
 	int flag = 0;
+	int getType;
 	
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
+			getType = i;
 			if(strcmp(id[i].typ,"int")==0){
 				flag = 1;	
 				break;		
@@ -153,28 +158,29 @@ void checkValue(char* variable, int iValue, float fValue, char* cValue){
 		}
 	}
 	if(flag==1){
-		if(!iValue){
+		if(type==3){
 			printf("\n---->>>> ERROR LINE %d: '%s' is not an 'int' type, type mismatched! <<<<----",line,cValue);
 			exit(1);
 		}
 	}
 	else if(flag==2){
-		if (!fValue){
+		if(type==3){
 			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'float' type, type mismatched! <<<<----",line,cValue);
 			exit(1);
 		}
 	}
 	else if(flag==3){
-		if(isalpha(iValue)){
-			printf("\n---->>>> ERROR LINE %d: '%d' is not an 'char' type, type mismatched!<<<<----",line,iValue);
+		if(type==1){
+			printf("\n---->>>> ERROR LINE %d: '%d' is not a 'char' type, type mismatched! <<<<----",line,iValue);
 			exit(1);
 		}
-		else if(isalpha(fValue)){
-			printf("\n---->>>> ERROR LINE %d: '%f' is not a 'char' type, type mismatched! <<<<----",line,fValue);
+		else if(type==2){
+			printf("\n---->>>> ERROR LINE %d: '%g' is not a 'char' type, type mismatched! <<<<----",line,fValue);
 			exit(1);
 		}
 	}
 }
+
 
 
 /* registThisVal registers the given variable's values to the struct identifiers */
@@ -199,6 +205,8 @@ void registThisVal(char* variable, int iValue, float fValue, char* cValue){
 	}
 }
 
+
+
 /* checkVarDup checks if the given variable has duplicates or has been redeclared */
 void checkVarDup(char* variable, char* type){
 	int i;
@@ -222,20 +230,28 @@ void checkVarDup(char* variable, char* type){
 
 
 /* checkVarExist checks if the given variable exists during initialization */
-void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
+void checkVarExist(char* variable, int iValue, float fValue, char* cValue, int type){
 	int i;
 	int flag = 0;
-	
+
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
-			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0 || strcmp(id[i].typ,"char")==0){
+			if(strcmp(id[i].typ,"int")==0){
 				flag = 1;
-				break;			
+				break;
+			} 
+			else if(strcmp(id[i].typ,"float")==0){
+				flag = 1;
+				break;
+			}
+			else if(strcmp(id[i].typ,"char")==0){
+				flag = 1;
+				break;
 			}
 		}
 	}
 	if(flag==1){
-		checkValue(variable,iValue,fValue,cValue);
+		checkValue(variable,iValue,fValue,cValue,type);
 		registThisVal(variable,iValue,fValue,cValue);		// if exists, it will invoke the registThisVar function to save the variable's value
 		updateVal(variable,iValue,fValue,cValue);		// then, it will invoke the updateVal function to update the variable's value
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
@@ -245,7 +261,8 @@ void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 	}
 }
 
-/* checkVar checks if the given variable exists during printing */
+
+/* checkVar checks if the instance variable exists during printing */
 void checkVar(char* variable){
 	int i;
 	int flag = 0;
@@ -266,7 +283,6 @@ void checkVar(char* variable){
 
 
 /* checkThisVar checks if the given variable (int or float type) initialized to another variable exists */
-/* checkThisVar also checks if the given variable (int or float type) exists during printing and type matching */
 float checkThisNumVar(char* variable){
 	int i,getIndex;
 	int flag = 0;
@@ -293,7 +309,7 @@ float checkThisNumVar(char* variable){
 	} 
 	else if(flag==2){		// causes error if the given variable is type mismatched for an int or float type
 		if(strcmp(id[getIndex].typ,"char")==0){
-			printf("\n---->>>> ERROR LINE %d: '%s' is neither 'int' nor 'float' type!, type mismatched! <<<<----",line,variable);
+			printf("\n---->>>> ERROR LINE %d: '%s' is a 'char' type, type mismatched! <<<<----",line,variable);
 			exit(1);
 		}
 	} else {
@@ -308,7 +324,6 @@ float checkThisNumVar(char* variable){
 
 
 /* checkThisCharVar checks if the given variable (char type) initialized to another variable exists */
-/* checkThisCharVar also checks if the given variable (char type) exists during printing and type matching */
 char* checkThisCharVar(char* variable){
 	int i,getIndex;
 	int flag = 0;
@@ -320,21 +335,10 @@ char* checkThisCharVar(char* variable){
 				flag = 1;
 				break;
 			}
-			else{			
-				flag = 2;
-				break;
-			}
 		}
 	}
-	if(flag==1){
+	if(flag==1)
 		return getCharValue(variable); // if exists, then it will invoke the getCharValue function
-	} 
-	else if(flag==2){		// causes error if the given variable is type mismatched for a char type
-		if(strcmp(id[getIndex].typ,"int")==0 || strcmp(id[getIndex].typ,"float")==0){
-			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'char' type, type mismatched! <<<<----",line,variable);	
-			exit(1);
-		}
-	}
 	else {
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
 		exit(1);
