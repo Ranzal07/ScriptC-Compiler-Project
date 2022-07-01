@@ -43,7 +43,7 @@
 \n                                  {return NEWLINE;}
 
 [ \t\n]                             ;
-[-+*/=":,]                        {return yytext[0];}
+[-+*/="():,]                        {return yytext[0];}
 .                                   {ECHO; yyerror ("unexpected character");}
 
 %%
