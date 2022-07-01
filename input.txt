@@ -1,3 +1,0 @@
-nuna:int=44
-shang:char="asdsa"
-ching:char=nuna
