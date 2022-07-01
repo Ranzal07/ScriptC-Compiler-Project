@@ -10,4 +10,4 @@ iphu:int
 iphu=33
 
 display:"PIPIPIP %s %f POPPY %s %f %f %c GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
-display:"Hehe"
+display:"Hehe %f",fuv
