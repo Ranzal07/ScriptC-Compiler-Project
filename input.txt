@@ -4,9 +4,10 @@ fuv:float
 chey:char
 chey="Supercalifragilistic!"
 flit:float=1.4
-fuv=1.4
+fuv=1.47
 cheb:char="Hey Ya!"
 iphu:int
 iphu=33
 
-display:"PIPIPIP \n %s \n %f \n POPPY \n %c \n %f \n %f \n %s GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
+display:"PIPIPIP %s %f POPPY %c %f %f %s GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
+display:"Hehe"

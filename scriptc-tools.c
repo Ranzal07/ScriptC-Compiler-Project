@@ -347,6 +347,7 @@ char* getStringFromId(char *str){
 
 
 void printValues(char* string){
+	printf("\nOUTPUT LINE %d: ",line);
 	printf("%s", string);
 }
 
