@@ -8,3 +8,4 @@ sone:char='Tennessee'
 display:"%d Hello %s Arkansas %f Mississippi %c",neng,shang,nushi,shang
 display:"Jiji %s %d",nuna
 display:"%c",sone
+display:"asdsa"
