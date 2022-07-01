@@ -1,11 +1,3 @@
-nuna:int
-shang:char
-neng:int=14
-nushi:float=12.4
-nuna=12+nushi
-shang="Texas"
-sone:char='Tennessee'
-display:"%d Hello %s Arkansas %f Mississippi %c",neng,shang,nushi,shang
-display:"Jiji %s %d",nuna
-display:"%c",sone
-display:"asdsa"
+nuna:int=44
+shang:char="asdsa"
+ching:char=nuna

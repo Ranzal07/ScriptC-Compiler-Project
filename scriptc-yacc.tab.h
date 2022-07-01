@@ -1,8 +1,8 @@
 /* A Bison parser, made by GNU Bison 2.7.  */
 
-/* Bison interface for Yacc-like parsers in C
+/* Skeleton interface for Bison GLR parsers in C
    
-      Copyright (C) 1984, 1989-1990, 2000-2012 Free Software Foundation, Inc.
+      Copyright (C) 2002-2012 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-/* Line 2058 of yacc.c  */
+/* Line 2579 of glr.c  */
 #line 16 "scriptc-yacc.y"
 
 	typedef struct types{
@@ -53,11 +53,15 @@ extern int yydebug;
 		int numbersLen;
 		char* strings[100];
 		int stringsLen;
+		int dType;
+		int iValues;
+		float fValues;
+		char* cValues;
 	} type;
 
 
-/* Line 2058 of yacc.c  */
-#line 61 "scriptc-yacc.tab.h"
+/* Line 2579 of glr.c  */
+#line 65 "scriptc-yacc.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -71,25 +75,23 @@ extern int yydebug;
      INTEGERS = 261,
      DECIMALS = 262,
      CHARACTER = 263,
-     NIDENTIFIER = 264,
-     SIDENTIFIER = 265,
-     INT = 266,
-     FLOAT = 267,
-     CHAR = 268,
-     STRING = 269
+     IDENTIFIER = 264,
+     INT = 265,
+     FLOAT = 266,
+     CHAR = 267,
+     STRING = 268
    };
 #endif
-
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 {
-/* Line 2058 of yacc.c  */
-#line 30 "scriptc-yacc.y"
+/* Line 2579 of glr.c  */
+#line 34 "scriptc-yacc.y"
 type all;
 
-/* Line 2058 of yacc.c  */
-#line 93 "scriptc-yacc.tab.h"
+/* Line 2579 of glr.c  */
+#line 95 "scriptc-yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -98,18 +100,6 @@ type all;
 
 extern YYSTYPE yylval;
 
-#ifdef YYPARSE_PARAM
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
-#else
-int yyparse ();
-#endif
-#else /* ! YYPARSE_PARAM */
-#if defined __STDC__ || defined __cplusplus
 int yyparse (void);
-#else
-int yyparse ();
-#endif
-#endif /* ! YYPARSE_PARAM */
 
 #endif /* !YY_YY_SCRIPTC_YACC_TAB_H_INCLUDED  */
