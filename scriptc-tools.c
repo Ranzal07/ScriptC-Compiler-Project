@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 int line = 1;		// for getting incremented line number indexes
 int indexVar = 0;		// for incrementing variable indexes
@@ -18,6 +19,28 @@ identifier id[1000];		// id will be the struct variable name and has 1000 indexe
 float symbols[1000];		// symbols store values to the identifier
 char* char_symbols[1000];		// symbols store chartype values to the identifier
 char stringsDisplay[100][100];	// symbols store strings values to be displayed
+
+
+int getType(char *variable){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if (strcmp(id[i].typ,"int")==0){
+				flag = 1;
+				break;
+			} else if (strcmp(id[i].typ,"float")==0){
+				flag = 2;
+				break;
+			} else if (strcmp(id[i].typ,"char")==0){
+				flag = 3;
+				break;
+			}
+		}
+	}
+	return flag;
+}
 
 
 void addStr(char* str, int length){
@@ -41,7 +64,7 @@ float getValue(char* variable){
 		if(strcmp(id[i].var,variable)==0){		// <-- this means if the struct id.var is equal to the current variable name
 			if(strcmp(id[i].typ,"int")==0){
 				symbols[bucket] = id[i].ival;	
-				return (int)symbols[bucket];		// returns the given variable's recognized int value according to its index
+				return symbols[bucket];		// returns the given variable's recognized int value according to its index
 			}
 			else if(strcmp(id[i].typ,"float")==0){
 				symbols[bucket] = id[i].fval;
@@ -60,8 +83,13 @@ char* getCharValue(char* variable){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){	
 			if(strcmp(id[i].typ,"char")==0){
-				strcpy(char_symbols[bucket],id[i].cval);
-				return char_symbols[bucket];		// returns the current variable's recognized char type value according to its index
+				if(strlen(id[i].cval)!=0){
+					strcpy(char_symbols[bucket],id[i].cval);
+					return char_symbols[bucket];	// returns the current variable's recognized char type value according to its index
+				}
+				else{
+					return NULL;
+				}									
 			}
 		}
 	}
@@ -102,6 +130,57 @@ void registThisVar(char* variable, char* type){
 }
 
 
+
+
+void checkValue(char* variable, int iValue, float fValue, char* cValue){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0){
+				flag = 1;	
+				break;		
+			}
+			else if(strcmp(id[i].typ,"float")==0){
+				flag = 2;	
+				break;
+			}
+			else if(strcmp(id[i].typ,"char")==0){
+				flag = 3;
+				break;
+			}
+		}
+	}
+	if(flag==1){
+		if(!iValue){
+			printf("\n---->>>> ERROR LINE %d: '%s' is not an 'int' type! <<<<----",line,cValue);
+			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			exit(1);
+		}
+	}
+	else if(flag==2){
+		if (!fValue){
+			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'float' type! <<<<----",line,cValue);
+			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			exit(1);
+		}
+	}
+	else if(flag==3){
+		if(isalpha(iValue)){
+			printf("\n---->>>> ERROR LINE %d: '%d' is not an 'char' type! <<<<----",line,iValue);
+			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			exit(1);
+		}
+		else if(isalpha(fValue)){
+			printf("\n---->>>> ERROR LINE %d: '%f' is not a 'char' type! <<<<----",line,fValue);
+			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			exit(1);
+		}
+	}
+}
+
+
 /* registThisVal registers the given variable's values to the struct identifiers */
 void registThisVal(char* variable, int iValue, float fValue, char* cValue){
 	int i;
@@ -109,15 +188,15 @@ void registThisVal(char* variable, int iValue, float fValue, char* cValue){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			if(strcmp(id[i].typ,"int")==0){
-				id[indexVar].ival = iValue;		// given int values will be registered the struct identifiers (id.ival)
+				id[indexVar].ival = iValue;		// given int values will be registered to the struct identifiers (id.ival)
 				break;		
 			}
 			else if(strcmp(id[i].typ,"float")==0){
-				id[indexVar].fval = fValue;		// given float values will be registered the struct identifiers (id.fval)	
+				id[indexVar].fval = fValue;		// given float values will be registered to the struct identifiers (id.fval)	
 				break;
 			}
 			else if(strcmp(id[i].typ,"char")==0){
-				strcpy(id[indexVar].cval,cValue);		// given char values will be registered the struct identifiers (id.cval)		
+				strcpy(id[indexVar].cval,cValue);		// given char values will be registered to the struct identifiers (id.cval)		
 				break;
 			}
 		}
@@ -128,7 +207,7 @@ void registThisVal(char* variable, int iValue, float fValue, char* cValue){
 void checkVarDup(char* variable, char* type){
 	int i;
 	int flag = 0;
-	
+
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){	
 			flag = 1;
@@ -161,10 +240,31 @@ void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 		}
 	}
 	if(flag==1){
+		checkValue(variable,iValue,fValue,cValue);
 		registThisVal(variable,iValue,fValue,cValue);		// if exists, it will invoke the registThisVar function to save the variable's value
 		updateVal(variable,iValue,fValue,cValue);		// then, it will invoke the updateVal function to update the variable's value
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
+		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
+		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
+		exit(1);
+	}
+}
+
+/* checkVar checks if the given variable exists during printing */
+void checkVar(char* variable){
+	int i;
+	int flag = 0;
+	
+	for(i=0;i<indexVar;i++){
+		if(strcmp(id[i].var,variable)==0){
+			if(strcmp(id[i].typ,"int")==0 || strcmp(id[i].typ,"float")==0 || strcmp(id[i].typ,"char")==0){
+				flag = 1;
+				break;			
+			}
+		}
+	}
+	if(flag==0){
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
 		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
 		exit(1);
@@ -212,6 +312,10 @@ float checkThisNumVar(char* variable){
 }
 
 
+
+
+
+
 /* checkThisCharVar checks if the given variable (char type) initialized to another variable exists */
 /* checkThisCharVar also checks if the given variable (char type) exists during printing and type matching */
 char* checkThisCharVar(char* variable){
@@ -247,6 +351,11 @@ char* checkThisCharVar(char* variable){
 		exit(1);
 	}
 }
+
+char* getStringFromId(char *str){
+	char* val = checkThisCharVar(str);
+}
+
 
 void printValues(char* string){
 	printf("%s", string);
@@ -314,7 +423,7 @@ void printFinalString(char* strFinal){
 
 
 // PRINTS THE STRING FOR THE FINAL PRODUCT IN YACC LINE 69
-void printStruct(char* inputStr, int iValues[], float fValues[], int numbersLen, int stringsLen) {
+void printStruct(char* inputStr, const int iValues[], const float fValues[], int numbersLen, int stringsLen) {
 	int numSpecifiers=0, strSpecifiers=0, floatSpecifiers=0, integerSpecifiers=0, charSpecifiers=0, stringSpecifiers=0;
 	
 	int posfloat=0, posint=0, poschar=0, posstr=0, counter;
@@ -400,5 +509,3 @@ void printStruct(char* inputStr, int iValues[], float fValues[], int numbersLen,
 	}
 	printFinalString(strFinal);
 }
-
-

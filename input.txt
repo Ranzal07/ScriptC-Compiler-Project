@@ -1,10 +1,12 @@
-nuna:int
-shang:char
-neng:int=14
-nushi:float=12.4
-nuna=12+nushi
-shang="Texas"
-sone:char='Tennessee'
-display:"%d Hello %s Arkansas %f Mississippi %c",neng,shang,nushi,shang
-display:"Jiji %s %d",nuna
-display:"%c",sone
+izhu:int=10
+chaw:char='Boombastic!'
+fuv:float
+chey:char
+chey="Supercalifragilistic!"
+flit:float=22.6
+fuv=1.4
+cheb:char="Hey Ya!"
+iphu:int
+iphu=33
+
+display:"PIPIPIP %s %d POPPY %c %f %f %s GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
