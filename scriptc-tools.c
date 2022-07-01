@@ -154,27 +154,23 @@ void checkValue(char* variable, int iValue, float fValue, char* cValue){
 	}
 	if(flag==1){
 		if(!iValue){
-			printf("\n---->>>> ERROR LINE %d: '%s' is not an 'int' type! <<<<----",line,cValue);
-			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			printf("\n---->>>> ERROR LINE %d: '%s' is not an 'int' type, type mismatched! <<<<----",line,cValue);
 			exit(1);
 		}
 	}
 	else if(flag==2){
 		if (!fValue){
-			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'float' type! <<<<----",line,cValue);
-			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'float' type, type mismatched! <<<<----",line,cValue);
 			exit(1);
 		}
 	}
 	else if(flag==3){
 		if(isalpha(iValue)){
-			printf("\n---->>>> ERROR LINE %d: '%d' is not an 'char' type! <<<<----",line,iValue);
-			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			printf("\n---->>>> ERROR LINE %d: '%d' is not an 'char' type, type mismatched!<<<<----",line,iValue);
 			exit(1);
 		}
 		else if(isalpha(fValue)){
-			printf("\n---->>>> ERROR LINE %d: '%f' is not a 'char' type! <<<<----",line,fValue);
-			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			printf("\n---->>>> ERROR LINE %d: '%f' is not a 'char' type, type mismatched! <<<<----",line,fValue);
 			exit(1);
 		}
 	}
@@ -216,7 +212,6 @@ void checkVarDup(char* variable, char* type){
 	}
 	if(flag==1){
 		printf("\n---->>>> ERROR LINE %d: '%s' already declared! <<<<----",line,variable);	
-		printf("\n---->>>> ERROR TYPE: VARIABLE REDECLARATION <<<<----");	
 		exit(1);		// terminates the program
 	}
 	else{
@@ -246,7 +241,6 @@ void checkVarExist(char* variable, int iValue, float fValue, char* cValue){
 		// printf("\nLINE %d: Correct Variable '%s' Initialization!",line,variable);
 	} else {
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
-		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
 		exit(1);
 	}
 }
@@ -266,7 +260,6 @@ void checkVar(char* variable){
 	}
 	if(flag==0){
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
-		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
 		exit(1);
 	}
 }
@@ -281,9 +274,9 @@ float checkThisNumVar(char* variable){
 	for(i=0;i<indexVar;i++){
 		if(strcmp(id[i].var,variable)==0){
 			getIndex = i;
-			if(strcmp(id[i].typ,"int")==0){		
+			if(strcmp(id[i].typ,"int")==0){
 				flag = 1;
-				break;			
+				break;
 			}
 			else if (strcmp(id[i].typ,"float")==0){
 				flag = 1;
@@ -300,13 +293,11 @@ float checkThisNumVar(char* variable){
 	} 
 	else if(flag==2){		// causes error if the given variable is type mismatched for an int or float type
 		if(strcmp(id[getIndex].typ,"char")==0){
-			printf("\n---->>>> ERROR LINE %d: '%s' is neither 'int' nor 'float' type! <<<<----",line,variable);
-			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");	
+			printf("\n---->>>> ERROR LINE %d: '%s' is neither 'int' nor 'float' type!, type mismatched! <<<<----",line,variable);
 			exit(1);
 		}
 	} else {
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
-		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
 		exit(1);
 	}
 }
@@ -340,14 +331,12 @@ char* checkThisCharVar(char* variable){
 	} 
 	else if(flag==2){		// causes error if the given variable is type mismatched for a char type
 		if(strcmp(id[getIndex].typ,"int")==0 || strcmp(id[getIndex].typ,"float")==0){
-			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'char' type! <<<<----",line,variable);
-			printf("\n\t---->>>> ERROR TYPE: TYPE MISMATCH <<<<----");		
+			printf("\n---->>>> ERROR LINE %d: '%s' is not a 'char' type, type mismatched! <<<<----",line,variable);	
 			exit(1);
 		}
 	}
 	else {
 		printf("\n---->>>> ERROR LINE %d: '%s' undeclared! <<<<----",line,variable);
-		printf("\n---->>>> ERROR TYPE: UNDECLARED VARIABLE <<<<----");	
 		exit(1);
 	}
 }

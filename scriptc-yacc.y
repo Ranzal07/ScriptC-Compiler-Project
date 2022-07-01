@@ -66,6 +66,13 @@ num_statements		:	ID ':' type						{checkVarDup($1.c, $3.c);}
 															registThisVal($1.c ,$5.i, $5.f, $5.c); 
 															updateVal($1.c ,$5.i, $5.f, $5.c);
 														}
+					|	ID ':' type '=' ID				{
+															checkVarDup($1.c, $3.c); 
+															checkThisNumVar($5.c);
+															registThisVal($1.c ,$5.i, $5.f, $5.c); 
+															updateVal($1.c ,$5.i, $5.f, $5.c);
+														}
+					;
 
 let_statements		:	ID ':' CHAR						{checkVarDup($1.c, $3.c);}
 					|	ID '=' str						{checkVarExist($1.c, $3.i, $3.f, $3.c);}
@@ -76,6 +83,7 @@ let_statements		:	ID ':' CHAR						{checkVarDup($1.c, $3.c);}
 														} 
 					|	ID ':' CHAR '=' ID				{
 															checkVarDup($1.c,$3.c); 
+															checkThisCharVar($5.c);
 															char* cValues = getStringFromId($5.c);
 															registThisVal($1.c ,$5.i, $5.f, cValues);
 															updateVal($1.c ,$5.i, $5.f, cValues);

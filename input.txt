@@ -1,12 +1,12 @@
-izhu:int=10
+izhu:float=1.3
 chaw:char='Boombastic!'
 fuv:float
 chey:char
 chey="Supercalifragilistic!"
-flit:float=22.6
+flit:float=1.4
 fuv=1.4
 cheb:char="Hey Ya!"
 iphu:int
 iphu=33
 
-display:"PIPIPIP %s %d POPPY %c %f %f %s GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
+display:"PIPIPIP \n %s \n %f \n POPPY \n %c \n %f \n %f \n %s GUGUGUGU",cheb,izhu,chey,flit,fuv,chaw
